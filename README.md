@@ -22,18 +22,11 @@ Below is the visual structure of the physical prototype and the challenges encou
 To help future developers take over and scale this project, here is how the files are organized:
 
 * `arduino/`
-  * [`urban_glow_grid_mega_final/`](file:///Users/Abir/Desktop/innovation%20project/arduino/urban_glow_grid_mega_final): The production code uploaded to the Arduino Mega managing inputs/outputs.
+  * `urban_glow_grid_mega_final/`: The production code uploaded to the Arduino Mega managing inputs/outputs.
   * `mega_hardware_test/`: Simple test scripts to isolate issues with OLED, LEDs, dials, or buttons.
-  * [`wiring_guide.pdf`](file:///Users/Abir/Desktop/innovation%20project/arduino/wiring_guide.pdf): Detailed electrical connection blueprint.
-* `simulation/`
-  * [`Urban_GlowGrid_Simulator.html`](file:///Users/Abir/Desktop/innovation%20project/simulation/Urban_GlowGrid_Simulator.html): Browser-based web visualizer for the grid status.
-  * [`mock_websocket_server.py`](file:///Users/Abir/Desktop/innovation%20project/simulation/mock_websocket_server.py): Python server to stream grid load rates into the simulator.
-* `pdf_generator/`
-  * [`final_presentation.html`](file:///Users/Abir/Desktop/innovation%20project/pdf_generator/final_presentation.html): HTML source for the presentation slide deck.
-  * [`oral_script.html`](file:///Users/Abir/Desktop/innovation%20project/pdf_generator/oral_script.html): HTML source for the 3-minute oral presentation script.
-  * Scripts to automate PDF compiling (`generate_final_presentation_pdf.py`, `generate_manual_pdf.py`, etc.).
-* `image/`: Photos used in presentations, manual, and this documentation.
-* `scale up/`: Canvas files and diagrams planning the transition to a mass-market product.
+  * `arduino_wiring.md`: Detailed pinout mapping and electronic connection guide.
+  * `wiring_guide.pdf`: Blueprints showing the circuit layout.
+* `image/`: Clean folder containing project photos.
 
 ---
 
@@ -65,28 +58,14 @@ The physical maquette separates the **wooden layout structure** from the **elect
 
 ## 💻 Software Setup & Installation
 
-### 1. Arduino Code Deployment
-Open the [production code](file:///Users/Abir/Desktop/innovation%20project/arduino/urban_glow_grid_mega_final/urban_glow_grid_mega_final.ino) in the Arduino IDE. 
+### Arduino Code Deployment
+Open the production code (`arduino/urban_glow_grid_mega_final/urban_glow_grid_mega_final.ino`) in the Arduino IDE. 
 
 Make sure you have installed the following libraries via the Arduino Library Manager:
 * **Adafruit_NeoPixel** (to control the WS2812B LEDs)
 * **SSD1306Ascii** (lightweight text-only library to control the OLED screen without overloading SRAM)
 
 Compile and upload the project onto your Arduino Mega.
-
-### 2. Running the Web Simulator
-To visualize grid activity on a computer screen alongside the physical model, run our local simulator:
-
-1. Open your terminal in the project directory.
-2. Activate the python virtual environment:
-   ```bash
-   source venv/bin/activate
-   ```
-3. Run the mock server (starts a WebSocket at `ws://localhost:8080` to broadcast sensor fluctuations):
-   ```bash
-   python simulation/mock_websocket_server.py
-   ```
-4. Double-click to open [`simulation/Urban_GlowGrid_Simulator.html`](file:///Users/Abir/Desktop/innovation%20project/simulation/Urban_GlowGrid_Simulator.html) in any browser. It will connect automatically and show live zone balancing.
 
 ---
 
@@ -106,13 +85,13 @@ The game simulates a peak winter day. The player has **3 minutes** to maintain t
 If you are resuming this project, here are the critical steps required to turn this prototype into a commercial product:
 
 * **Transition to Custom PCB**: The biggest hardware challenge was **Loose Connections** (wires coming loose from the breadboards due to physical vibration). Designing a dedicated Printed Circuit Board (PCB) to replace jumper wires will reduce assembly time by 95% and make the product robust enough for shipping.
-* **Scale Software Architecture**: The current C++ simulation is optimized for Paris (6 zones). The code is structured modularly so you can swap out the geographic layout files (`paris_map_data.js` and LED indices) to model cities like **London, Tokyo, or New York**.
+* **Scale Software Architecture**: The current C++ simulation is optimized for Paris (6 zones). The code is structured modularly so you can swap out the geographic layout files and LED indices to model other cities.
 * **Transition to B2B Educational Kits**: The low BOM (< 200 RMB) makes this highly profitable. Next phases should package the PCB, components, and a flat-packed wooden box as a "build-your-own smart city kit" for EdTech classrooms.
 
 ---
 
-## 👥 The Team (Team 22)
-* **Abir ISLAM** — CEO / Project Lead
-* **Sofiane LACHHAB** — CTO / Architecture
-* **Mohamed MELLOUK** — Creative Director
-* **Ismail MABROUKI** — Hardware Support
+## 👥 Roles & Organization (Team 22)
+* **CEO / Project Lead**
+* **CTO / System Architecture**
+* **Creative Director**
+* **Hardware & Fabrication Support**
