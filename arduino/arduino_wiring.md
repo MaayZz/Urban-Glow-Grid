@@ -8,28 +8,28 @@ Ce document décrit les connexions électriques réelles utilisées sur le proto
 
 | Composant Physique | Type de Signal | Pin Arduino | Mode Pin | Description |
 | :--- | :--- | :--- | :--- | :--- |
-| **Écran OLED (1.3 pouce)** | I2C (SDA) | **Broche SDA (D20)** | Entrée/Sortie | Ligne de données I2C de l'afficheur OLED |
-| **Écran OLED (1.3 pouce)** | I2C (SCL) | **Broche SCL (D21)** | Sortie | Ligne d'horloge I2C de l'afficheur OLED |
-| **Potentiomètre 1** | Entrée Analogue | **A0** | INPUT | Réglage de charge de la Zone 1 |
-| **Potentiomètre 2** | Entrée Analogue | **A1** | INPUT | Réglage de charge de la Zone 2 |
-| **Potentiomètre 3** | Entrée Analogue | **A2** | INPUT | Réglage de charge de la Zone 3 |
-| **Potentiomètre 4** | Entrée Analogue | **A3** | INPUT | Réglage de charge de la Zone 4 |
-| **Potentiomètre 5** | Entrée Analogue | **A4** | INPUT | Réglage de charge de la Zone 5 |
-| **Potentiomètre 6** | Entrée Analogue | **A5** | INPUT | Réglage de charge de la Zone 6 |
-| **Ruban LED 17cm (Zone 1)** | Sortie Digitale | **Broche 2** | OUTPUT | Indicateur LED de la Zone 1 |
-| **Ruban LED 17cm (Zone 2)** | Sortie Digitale | **Broche 3** | OUTPUT | Indicateur LED de la Zone 2 |
-| **Ruban LED 17cm (Zone 3)** | Sortie Digitale | **Broche 4** | OUTPUT | Indicateur LED de la Zone 3 |
-| **Ruban LED 17cm (Zone 4)** | Sortie Digitale | **Broche 5** | OUTPUT | Indicateur LED de la Zone 4 |
-| **Ruban LED 17cm (Zone 5)** | Sortie Digitale | **Broche 6** | OUTPUT | Indicateur LED de la Zone 5 |
-| **Ruban LED 17cm (Zone 6)** | Sortie Digitale | **Broche 7** | OUTPUT | Indicateur LED de la Zone 6 |
-| **Ruban LED 10cm (Mon. 1)** | Sortie Digitale | **Broche 8** | OUTPUT | Indicateur LED du Monument 1 |
-| **Ruban LED 10cm (Mon. 2)** | Sortie Digitale | **Broche 9** | OUTPUT | Indicateur LED du Monument 2 |
-| **Speaker 1** | Sortie PWM | **Broche 22** | OUTPUT | Haut-parleur principal (Sons système et sirènes d'alarme) |
-| **Speaker 2** | Sortie PWM | **Broche 24** | OUTPUT | Haut-parleur secondaire (Bruits de clic / battement de cœur) |
-| **Bouton 1 (Start)** | Entrée Digitale | **Broche 26** | INPUT_PULLUP | Bouton poussoir pour lancer la partie |
-| **Bouton 2 (Reset)** | Entrée Digitale | **Broche 28** | INPUT_PULLUP | Bouton poussoir pour réinitialiser le jeu |
-| **Bouton 3 (Monument 1)** | Entrée Digitale | **Broche 30** | INPUT_PULLUP | Bouton pour activer/désactiver le Monument 1 |
-| **Bouton 4 (Monument 2)** | Entrée Digitale | **Broche 32** | INPUT_PULLUP | Bouton pour activer/désactiver le Monument 2 |
+| Écran OLED (1.3 pouce) | I2C (SDA) | Broche SDA (D20) | Entrée/Sortie | Ligne de données I2C de l'afficheur OLED |
+| Écran OLED (1.3 pouce) | I2C (SCL) | Broche SCL (D21) | Sortie | Ligne d'horloge I2C de l'afficheur OLED |
+| Potentiomètre 1 | Entrée Analogue | A0 | INPUT | Réglage de charge de la Zone 1 |
+| Potentiomètre 2 | Entrée Analogue | A1 | INPUT | Réglage de charge de la Zone 2 |
+| Potentiomètre 3 | Entrée Analogue | A2 | INPUT | Réglage de charge de la Zone 3 |
+| Potentiomètre 4 | Entrée Analogue | A3 | INPUT | Réglage de charge de la Zone 4 |
+| Potentiomètre 5 | Entrée Analogue | A4 | INPUT | Réglage de charge de la Zone 5 |
+| Potentiomètre 6 | Entrée Analogue | A5 | INPUT | Réglage de charge de la Zone 6 |
+| Ruban LED 17cm (Zone 1) | Sortie Digitale | Broche 2 | OUTPUT | Indicateur LED de la Zone 1 |
+| Ruban LED 17cm (Zone 2) | Sortie Digitale | Broche 3 | OUTPUT | Indicateur LED de la Zone 2 |
+| Ruban LED 17cm (Zone 3) | Sortie Digitale | Broche 4 | OUTPUT | Indicateur LED de la Zone 3 |
+| Ruban LED 17cm (Zone 4) | Sortie Digitale | Broche 5 | OUTPUT | Indicateur LED de la Zone 4 |
+| Ruban LED 17cm (Zone 5) | Sortie Digitale | Broche 6 | OUTPUT | Indicateur LED de la Zone 5 |
+| Ruban LED 17cm (Zone 6) | Sortie Digitale | Broche 7 | OUTPUT | Indicateur LED de la Zone 6 |
+| Ruban LED 10cm (Mon. 1) | Sortie Digitale | Broche 8 | OUTPUT | Indicateur LED du Monument 1 |
+| Ruban LED 10cm (Mon. 2) | Sortie Digitale | Broche 9 | OUTPUT | Indicateur LED du Monument 2 |
+| Speaker 1 | Sortie PWM | Broche 22 | OUTPUT | Haut-parleur principal (Sons système et sirènes d'alarme) |
+| Speaker 2 | Sortie PWM | Broche 24 | OUTPUT | Haut-parleur secondaire (Bruits de clic / battement de cœur) |
+| Bouton 1 (Start) | Entrée Digitale | Broche 26 | INPUT_PULLUP | Bouton poussoir pour lancer la partie |
+| Bouton 2 (Reset) | Entrée Digitale | Broche 28 | INPUT_PULLUP | Bouton poussoir pour réinitialiser le jeu |
+| Bouton 3 (Monument 1) | Entrée Digitale | Broche 30 | INPUT_PULLUP | Bouton pour activer/désactiver le Monument 1 |
+| Bouton 4 (Monument 2) | Entrée Digitale | Broche 32 | INPUT_PULLUP | Bouton pour activer/désactiver le Monument 2 |
 
 ---
 
