@@ -34,16 +34,25 @@ To help future developers take over and scale this project, here is how the file
 
 The physical maquette separates the **wooden layout structure** from the **electronics layer** to allow easy, non-destructive wiring iterations. 
 
-### Sourcing & Cost Breakdown
+### Key Components:
+1. **Microcontroller**: Arduino Mega 2560 (selected for its high pin count to drive multiple parallel sensors/LEDs).
+2. **Visual Indicators**: 6 WS2812B NeoPixel strips (underneath landmarks) + I2C SSD1306 OLED Display (shows real-time numeric load metrics).
+3. **Control Interface**: 6 Potentiometers (load balancing dials) + 4 tactile Push Buttons (priority building toggles) + 1 Master Reset Button.
+4. **Audio Feedback**: 8-ohm Speaker/Buzzer (emits blackout warning alarms).
+5. **Physical Enclosure**: Laser-cut plywood baseboard, translucent PLA 3D-printed landmarks.
 
-| Component | Qty | Function |
-| :--- | :---: | :--- |
-| **Écran OLED de 1.3 pouce** | 1 | Affiche les informations de charge du réseau en temps réel |
-| **Rubans LED de 17cm** | 6 | Indicateurs lumineux de charge pour les 6 zones principales |
-| **Rubans LED de 10cm** | 2 | Indicateurs lumineux pour les monuments / overrides |
-| **Speakers** | 2 | Alertes sonores (alarme de surcharge et bruits de clic/battement de cœur) |
-| **Potentiomètres** | 6 | Contrôle manuel de la charge pour chaque zone |
-| **Boutons** | 4 | Interactions de jeu (Démarrage, Réinitialisation, Overrides Monuments) |
+### Sourcing & Cost Breakdown (Strictly < 200 RMB)
+
+| Component | Qty | Function | Est. Cost (RMB) |
+| :--- | :---: | :--- | :---: |
+| **Arduino Mega 2560** | 1 | Central Processing Unit | 45.00 |
+| **WS2812B LED Strips** | 6 | Paris Zone status lights (Green/Red) | 30.00 |
+| **OLED Display (I2C SSD1306)** | 1 | Real-time system display screen | 15.00 |
+| **Potentiometers (Dials)** | 6 | Local load adjustment controls | 12.00 |
+| **Push Buttons (Toggles)** | 4 | Priority building power overrides | 4.00 |
+| **Speaker / Buzzer** | 1 | Audio blackout alarms | 5.00 |
+| **Physical Materials** | — | Laser-cut plywood, 3D printing PLA, glue, screws | 80.00 |
+| **TOTAL** | | | **~191.00 RMB** |
 
 ---
 
@@ -77,7 +86,7 @@ If you are resuming this project, here are the critical steps required to turn t
 
 * **Transition to Custom PCB**: The biggest hardware challenge was **Loose Connections** (wires coming loose from the breadboards due to physical vibration). Designing a dedicated Printed Circuit Board (PCB) to replace jumper wires will reduce assembly time by 95% and make the product robust enough for shipping.
 * **Scale Software Architecture**: The current C++ simulation is optimized for Paris (6 zones). The code is structured modularly so you can swap out the geographic layout files and LED indices to model other cities.
-* **Transition to B2B Educational Kits**: Next phases should package the PCB, components, and a flat-packed wooden box as a "build-your-own smart city kit" for EdTech classrooms.
+* **Transition to B2B Educational Kits**: The low BOM (< 200 RMB) makes this highly profitable. Next phases should package the PCB, components, and a flat-packed wooden box as a "build-your-own smart city kit" for EdTech classrooms.
 
 ---
 
