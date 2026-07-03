@@ -8,8 +8,7 @@ Ce document décrit les connexions électriques réelles utilisées sur le proto
 
 | Composant Physique | Type de Signal | Pin Arduino | Mode Pin | Description |
 | :--- | :--- | :--- | :--- | :--- |
-| Écran OLED (1.3 pouce) | I2C (SDA) | Broche SDA (D20) | Entrée/Sortie | Ligne de données I2C de l'afficheur OLED |
-| Écran OLED (1.3 pouce) | I2C (SCL) | Broche SCL (D21) | Sortie | Ligne d'horloge I2C de l'afficheur OLED |
+| Écran OLED (1.3 pouce) | I2C (SDA / SCL) | **SDA** -> Broche D20 <br> **SCL** -> Broche D21 | Entrée / Sortie | Liaison I2C pour l'affichage de l'état du réseau |
 | Potentiomètre 1 | Entrée Analogue | A0 | INPUT | Réglage de charge de la Zone 1 |
 | Potentiomètre 2 | Entrée Analogue | A1 | INPUT | Réglage de charge de la Zone 2 |
 | Potentiomètre 3 | Entrée Analogue | A2 | INPUT | Réglage de charge de la Zone 3 |
