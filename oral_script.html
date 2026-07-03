@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Urban Glow Grid — Oral Presentation Script</title>
+  <style>
+    /* ============================================================
+       GUIDELINES-INSPIRED PRESENTATION ORAL CHEAT SHEET STYLE
+       ============================================================ */
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800;900&display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    @page {
+      size: A4 portrait;
+      margin: 12mm 15mm;
+    }
+
+    body {
+      background: #f4f8f6; /* Soft mint off-white */
+      background-image: 
+        radial-gradient(circle at 90% 10%, rgba(16, 185, 129, 0.06) 0%, transparent 40%),
+        radial-gradient(circle at 10% 90%, rgba(5, 150, 105, 0.04) 0%, transparent 40%);
+      color: #1e293b;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      line-height: 1.45;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    /* ── TITLE BLOCK ── */
+    .title-block {
+      border-bottom: 2px solid rgba(16, 185, 129, 0.2);
+      padding-bottom: 12px;
+      margin-bottom: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+
+    .title-left h1 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 24pt;
+      font-weight: 800;
+      color: #064e3b;
+      letter-spacing: -1px;
+    }
+
+    .title-left p {
+      font-size: 9.5pt;
+      color: #059669;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-top: 2px;
+    }
+
+    .title-meta {
+      text-align: right;
+      font-size: 8.5pt;
+      color: #64748b;
+      font-weight: 600;
+      line-height: 1.4;
+    }
+
+    .title-meta strong {
+      color: #064e3b;
+    }
+
+    /* ── METRICS GRID ── */
+    .metrics-bar {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .metric-card {
+      background: #ffffff;
+      border: 1px solid rgba(16, 185, 129, 0.12);
+      padding: 8px 10px;
+      border-radius: 12px;
+      text-align: center;
+      box-shadow: 0 4px 10px -5px rgba(6, 78, 59, 0.03);
+    }
+
+    .metric-card span {
+      display: block;
+      font-size: 7.5pt;
+      color: #64748b;
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      margin-bottom: 1px;
+    }
+
+    .metric-card strong {
+      font-family: 'Outfit', sans-serif;
+      font-size: 12pt;
+      color: #064e3b;
+      font-weight: 700;
+    }
+
+    /* ── SCRIPT CARDS ── */
+    .script-card {
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 14px 18px;
+      border: 1px solid rgba(16, 185, 129, 0.1);
+      box-shadow: 0 10px 25px -10px rgba(6, 78, 59, 0.04);
+      margin-bottom: 14px;
+      position: relative;
+      page-break-inside: avoid;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      border-bottom: 1px solid rgba(16, 185, 129, 0.06);
+      padding-bottom: 6px;
+    }
+
+    .slide-info {
+      font-family: 'Outfit', sans-serif;
+      font-size: 10.5pt;
+      font-weight: 700;
+      color: #064e3b;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .slide-number {
+      background: #e6f4ea;
+      color: #064e3b;
+      padding: 1px 6px;
+      border-radius: 5px;
+      font-size: 8.5pt;
+      font-weight: 800;
+    }
+
+    .card-badges {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Speaker Pill Badges */
+    .badge-speaker {
+      padding: 3px 8px;
+      border-radius: 99px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 8pt;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .speaker-abir { background: #e0f2fe; color: #0369a1; border: 1px solid #bae6fd; }
+    .speaker-ismail { background: #d1fae5; color: #065f46; border: 1px solid #a7f3d0; }
+    .speaker-sofiane { background: #f3e8ff; color: #6b21a8; border: 1px solid #e9d5ff; }
+    .speaker-mohamed { background: #fef3c7; color: #92400e; border: 1px solid #fde68a; }
+
+    .badge-time {
+      background: #f1f5f9;
+      color: #475569;
+      border: 1px solid #e2e8f0;
+      padding: 2px 7px;
+      border-radius: 99px;
+      font-size: 7.5pt;
+      font-weight: 700;
+    }
+
+    /* Visual Action / Cue Box */
+    .cue-box {
+      background: #f8fafc;
+      border-left: 3px solid #10b981;
+      padding: 6px 10px;
+      font-size: 8pt;
+      color: #475569;
+      border-radius: 0 8px 8px 0;
+      margin-bottom: 10px;
+      font-style: italic;
+    }
+
+    .cue-box strong {
+      color: #0f172a;
+      font-style: normal;
+    }
+
+    /* Speech Text */
+    .speech-box {
+      font-size: 11pt;
+      color: #0f172a;
+      font-weight: 500;
+      line-height: 1.5;
+      padding: 8px 12px;
+      background: #fafdfb;
+      border: 1px solid rgba(16, 185, 129, 0.05);
+      border-radius: 8px;
+      margin-bottom: 10px;
+      position: relative;
+    }
+
+    .speech-box::before {
+      content: "“";
+      font-family: 'Outfit', sans-serif;
+      font-size: 26pt;
+      color: rgba(16, 185, 129, 0.12);
+      position: absolute;
+      left: 2px;
+      top: -8px;
+      pointer-events: none;
+    }
+
+    .speech-box p {
+      text-indent: 10px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Bullet Guidelines */
+    .guidelines {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .guide-tag {
+      background: #f1f5f9;
+      color: #64748b;
+      font-size: 7.5pt;
+      font-weight: 600;
+      padding: 2px 6px;
+      border-radius: 4px;
+      border: 1px solid #e2e8f0;
+    }
+
+    .guide-tag strong {
+      color: #334155;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    
+    <!-- ── TITLE BLOCK ── -->
+    <div class="title-block">
+      <div class="title-left">
+        <h1>Urban Glow Grid</h1>
+        <p>Oral Presentation Script — Speaker Cheat Sheet</p>
+      </div>
+      <div class="title-meta">
+        Project: <strong>Team 22</strong><br>
+        Date: <strong>June 4, 2026</strong><br>
+        Format: <strong>Mid-term Showcase</strong>
+      </div>
+    </div>
+
+    <!-- ── METRICS GRID ── -->
+    <div class="metrics-bar">
+      <div class="metric-card">
+        <span>Total Time</span>
+        <strong>2:00 Minutes</strong>
+      </div>
+      <div class="metric-card">
+        <span>Q&amp;A Time</span>
+        <strong>2:00 Minutes</strong>
+      </div>
+      <div class="metric-card">
+        <span>Speakers</span>
+        <strong>4 Presenters</strong>
+      </div>
+      <div class="metric-card">
+        <span>Pacing Rule</span>
+        <strong>~30s per Speaker</strong>
+      </div>
+    </div>
+
+    <!-- ── SLIDE 1 ── -->
+    <div class="script-card">
+      <div class="card-header">
+        <div class="slide-info">
+          <span class="slide-number">Slide 1</span>
+          <span>Cover &amp; Introduction</span>
+        </div>
+        <div class="card-badges">
+          <span class="badge-speaker speaker-abir">Abir</span>
+          <span class="badge-time">⏱ ~10s</span>
+          <span class="badge-time">📝 28 words</span>
+        </div>
+      </div>
+      <div class="cue-box">
+        <strong>Visual Cue:</strong> Abir starts the presentation timer, stands at the center in front of the maquette with the team, and gestures to the title slide.
+      </div>
+      <div class="speech-box">
+        <p>Hello everyone. We are Team 22, and we present <b>Urban Glow Grid</b>, an interactive, physical smart city energy stabilization game designed to gamify the complexities of electrical grid management.</p>
+      </div>
+      <div class="guidelines">
+        <span class="guide-tag">Focus: <strong>Branding &amp; Hook</strong></span>
+        <span class="guide-tag">Tone: <strong>Professional &amp; Confident</strong></span>
+      </div>
+    </div>
+
+    <!-- ── SLIDE 2 ── -->
+    <div class="script-card">
+      <div class="card-header">
+        <div class="slide-info">
+          <span class="slide-number">Slide 2</span>
+          <span>Concept &amp; Educational Vision</span>
+        </div>
+        <div class="card-badges">
+          <span class="badge-speaker speaker-ismail">Ismail</span>
+          <span class="badge-time">⏱ ~30s</span>
+          <span class="badge-time">📝 67 words</span>
+        </div>
+      </div>
+      <div class="cue-box">
+        <strong>Visual Cue:</strong> Ismail points to the six zones laser-engraved on the plywood board to emphasize energy sector division.
+      </div>
+      <div class="speech-box">
+        <p>Electricity is invisible, making consumption abstract. Our game materializes this strain on a physical model of Paris. Grounded in research from <b>RTE's EcoWatt alerts</b> and <b>ADEME's load-shifting studies</b>, players must make real-time decisions to prioritize resources and balance grid loads, actively embodying UN Sustainable Development Goals <b>SDG 7 and SDG 11</b>.</p>
+      </div>
+      <div class="guidelines">
+        <span class="guide-tag">Focus: <strong>Problem Space &amp; SDGs</strong></span>
+        <span class="guide-tag">References: <strong>EcoWatt &amp; ADEME</strong></span>
+      </div>
+    </div>
+
+    <!-- ── SLIDE 3 ── -->
+    <div class="script-card">
+      <div class="card-header">
+        <div class="slide-info">
+          <span class="slide-number">Slide 3</span>
+          <span>Physical Design — La Maquette</span>
+        </div>
+        <div class="card-badges">
+          <span class="badge-speaker speaker-sofiane">Sofiane</span>
+          <span class="badge-time">⏱ ~30s</span>
+          <span class="badge-time">📝 65 words</span>
+        </div>
+      </div>
+      <div class="cue-box">
+        <strong>Visual Cue:</strong> Sofiane shows the wood baseboard map, points to the 3D-printed landmarks, and lightly indicates the modular spacing.
+      </div>
+      <div class="speech-box">
+        <p>For the maquette, we chose to <b>physically separate the layout structure from the electronics</b>, which allows safe and continuous wiring iterations. The plywood base is laser-engraved with the map of Paris split into six energy sectors. Key landmarks are printed in translucent 3D filament to diffuse light from the dynamic NeoPixels underneath.</p>
+      </div>
+      <div class="guidelines">
+        <span class="guide-tag">Focus: <strong>Laser Cut &amp; 3D Filament</strong></span>
+        <span class="guide-tag">Key Choice: <strong>Modular Separation</strong></span>
+      </div>
+    </div>
+
+    <!-- ── SLIDE 4 ── -->
+    <div class="script-card">
+      <div class="card-header">
+        <div class="slide-info">
+          <span class="slide-number">Slide 4</span>
+          <span>Hardware &amp; Technical Challenges</span>
+        </div>
+        <div class="card-badges">
+          <span class="badge-speaker speaker-abir">Abir</span>
+          <span class="badge-time">⏱ ~30s</span>
+          <span class="badge-time">📝 68 words</span>
+        </div>
+      </div>
+      <div class="cue-box">
+        <strong>Visual Cue:</strong> Abir gestures to the breadboard circuit beside the maquette, highlighting the screen integration and wiring complexity.
+      </div>
+      <div class="speech-box">
+        <p>On the hardware side, we are actively debugging technical issues. Adding the OLED screen caused I2C power drops, which we are correcting with filtering. The speaker was damaged during assembly, so we have bypassed it for now. To comfortably drive the expanded LED arrays and multiplexed inputs, we are planning to upgrade from <b>Arduino Uno to Mega</b>.</p>
+      </div>
+      <div class="guidelines">
+        <span class="guide-tag">Focus: <strong>Debugging (I2C, Audio)</strong></span>
+        <span class="guide-tag">Upgrade: <strong>Mega Transition</strong></span>
+      </div>
+    </div>
+
+    <!-- ── SLIDE 5 ── -->
+    <div class="script-card">
+      <div class="card-header">
+        <div class="slide-info">
+          <span class="slide-number">Slide 5</span>
+          <span>Gameplay &amp; Sourcing Cost</span>
+        </div>
+        <div class="card-badges">
+          <span class="badge-speaker speaker-mohamed">Mohamed</span>
+          <span class="badge-time">⏱ ~30s</span>
+          <span class="badge-time">📝 64 words</span>
+        </div>
+      </div>
+      <div class="cue-box">
+        <strong>Visual Cue:</strong> Mohamed turns one of the potentiometers to show a zone lighting up, and gestures to the budget cost table.
+      </div>
+      <div class="speech-box">
+        <p>Gameplay revolves around concrete actions: six potentiometers adjust zone light intensity, push buttons toggle priority building power, and a start button resets the grid. We optimized costs strictly: our direct components budget totals only <b>193.61 RMB</b>, as the base Arduino boards and wiring kits were provided by our school.</p>
+      </div>
+      <div class="guidelines">
+        <span class="guide-tag">Focus: <strong>Dials &amp; Priority Toggles</strong></span>
+        <span class="guide-tag">Budget: <strong>193.61 CNY (RMB)</strong></span>
+      </div>
+    </div>
+
+    <!-- ── SLIDE 6 ── -->
+    <div class="script-card">
+      <div class="card-header">
+        <div class="slide-info">
+          <span class="slide-number">Slide 6</span>
+          <span>Conclusion &amp; Roadmap</span>
+        </div>
+        <div class="card-badges">
+          <span class="badge-speaker speaker-abir">Abir</span>
+          <span class="badge-time">⏱ ~10s</span>
+          <span class="badge-time">📝 22 words</span>
+        </div>
+      </div>
+      <div class="cue-box">
+        <strong>Visual Cue:</strong> Abir smiles, makes eye contact with the judges, and opens the floor for questions.
+      </div>
+      <div class="speech-box">
+        <p>Our immediate next steps will be completing the Mega wiring and calibrating the simulator. Thank you for your time, we are now open for your questions.</p>
+      </div>
+      <div class="guidelines">
+        <span class="guide-tag">Focus: <strong>Roadmap</strong></span>
+        <span class="guide-tag">Call to action: <strong>Open for Q&amp;A</strong></span>
+      </div>
+    </div>
+
+  </div>
+
+</body>
+</html>

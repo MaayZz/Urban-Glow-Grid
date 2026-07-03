@@ -1,0 +1,747 @@
+import asyncio
+from playwright.async_api import async_playwright
+import os
+from pathlib import Path
+
+# Premium, modern 3-slide presentation HTML
+HTML_CONTENT = """<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Urban Glow Grid — Sourcing & Upstream Sourcing Slides</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800;900&display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    b, strong {
+      font-weight: 800 !important;
+    }
+
+    @page {
+      size: A4 landscape;
+      margin: 0;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: #e2e8f0;
+      color: #1e293b;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      line-height: 1.4;
+      width: 297mm;
+      height: 210mm;
+      overflow: hidden;
+    }
+
+    .slide {
+      width: 297mm;
+      height: 210mm;
+      padding: 16mm 20mm 12mm 20mm;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      background: #f4f8f6; /* Premium light mint background */
+      background-image: 
+        radial-gradient(circle at 85% 15%, rgba(16, 185, 129, 0.12) 0%, transparent 55%),
+        radial-gradient(circle at 15% 85%, rgba(5, 150, 105, 0.08) 0%, transparent 55%);
+      border: 1px solid rgba(16, 185, 129, 0.15);
+      page-break-after: always;
+      box-sizing: border-box;
+      overflow: hidden;
+    }
+
+    .slide:last-child {
+      page-break-after: avoid;
+    }
+
+    /* Print styling */
+    @media print {
+      body { background: transparent; }
+      .slide { border: none; }
+      .card, .photo-container, table, .badge {
+        box-shadow: none !important;
+      }
+    }
+
+    /* ── HEADER ── */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid rgba(16, 185, 129, 0.15);
+      padding-bottom: 6px;
+      margin-bottom: 10px;
+      z-index: 2;
+    }
+
+    .header h2 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 20pt;
+      font-weight: 700;
+      color: #064e3b;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      letter-spacing: -0.5px;
+    }
+
+    .header-icon {
+      color: #10b981;
+      width: 24px;
+      height: 24px;
+      stroke-width: 2.2;
+    }
+
+    .header .slide-meta {
+      font-size: 9pt;
+      font-weight: 700;
+      color: #059669;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* ── FOOTER ── */
+    .footer {
+      display: flex;
+      justify-content: space-between;
+      border-top: 1px solid rgba(16, 185, 129, 0.15);
+      padding-top: 6px;
+      margin-top: 8px;
+      font-size: 8pt;
+      color: #64748b;
+      font-weight: 600;
+      z-index: 2;
+    }
+
+    .footer-brand {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 800;
+      color: #064e3b;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+    }
+
+    /* ── COVER SLIDE LAYOUT ── */
+    .cover-layout {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 0;
+      overflow: hidden;
+    }
+
+    .cover-image {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 1;
+    }
+
+    .cover-overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(to top, rgba(6, 78, 59, 0.95) 0%, rgba(6, 78, 59, 0.8) 70%, transparent 100%);
+      padding: 40px 30px 20px 30px;
+      color: #ffffff;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+    }
+
+    .cover-eyebrow {
+      font-family: 'Outfit', sans-serif;
+      font-size: 10pt;
+      font-weight: 800;
+      color: #34d399;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      margin-bottom: 5px;
+    }
+
+    .cover-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 38pt;
+      font-weight: 900;
+      color: #ffffff;
+      letter-spacing: -1px;
+      line-height: 1.1;
+      margin-bottom: 4px;
+    }
+
+    .cover-subtitle {
+      font-size: 13pt;
+      font-weight: 500;
+      color: #a7f3d0;
+      margin-bottom: 15px;
+    }
+
+    .cover-footer {
+      display: flex;
+      justify-content: space-between;
+      border-top: 1px solid rgba(255, 255, 255, 0.15);
+      padding-top: 10px;
+      font-size: 8.5pt;
+      opacity: 0.9;
+    }
+
+    .cover-footer strong {
+      color: #34d399;
+    }
+
+    /* ── SLIDE 2: PHYSICAL PHOTOS GRID ── */
+    .grid-2col {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 20px;
+      flex: 1;
+      height: 150mm;
+      margin: 5px 0;
+      z-index: 2;
+    }
+
+    .photos-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      height: 100%;
+    }
+
+    .photo-container {
+      background: #ffffff;
+      border: 1px solid rgba(16, 185, 129, 0.15);
+      border-radius: 12px;
+      padding: 8px;
+      box-shadow: 0 4px 15px -5px rgba(6, 78, 59, 0.05);
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    .photo-container img {
+      width: 100%;
+      height: 110mm;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-bottom: 6px;
+    }
+
+    .photo-caption {
+      font-size: 8.5pt;
+      font-weight: 700;
+      color: #064e3b;
+      text-align: center;
+    }
+
+    .card {
+      background: #ffffff;
+      border: 1px solid rgba(16, 185, 129, 0.12);
+      border-radius: 12px;
+      padding: 12px 14px;
+      box-shadow: 0 4px 15px -5px rgba(6, 78, 59, 0.04);
+      margin-bottom: 10px;
+    }
+
+    .card h4 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 10pt;
+      font-weight: 800;
+      color: #064e3b;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+      border-bottom: 1px solid rgba(16, 185, 129, 0.08);
+      padding-bottom: 2px;
+    }
+
+    .card p {
+      font-size: 8.2pt;
+      color: #334155;
+      line-height: 1.35;
+    }
+
+    .card b {
+      color: #059669;
+    }
+
+    /* ── SLIDE 3: BOM TABLE STYLES ── */
+    .bom-table-container {
+      background: #ffffff;
+      border: 1px solid rgba(16, 185, 129, 0.15);
+      border-radius: 12px;
+      padding: 8px 12px;
+      box-shadow: 0 4px 20px -5px rgba(6, 78, 59, 0.04);
+      overflow: hidden;
+      height: 142mm;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 7.2pt;
+    }
+
+    th {
+      border-bottom: 2px solid #064e3b;
+      color: #064e3b;
+      font-weight: 800;
+      padding: 4px 5px;
+      text-align: left;
+      font-family: 'Outfit', sans-serif;
+      text-transform: uppercase;
+      font-size: 7pt;
+      letter-spacing: 0.3px;
+    }
+
+    td {
+      border-bottom: 1px solid rgba(16, 185, 129, 0.08);
+      padding: 4px 5px;
+      color: #334155;
+      vertical-align: middle;
+      line-height: 1.15;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    .total-row {
+      font-weight: 800;
+      background: #e6f4ea;
+      border-top: 2px solid #064e3b;
+      color: #064e3b;
+    }
+
+    /* Kraljic Badges */
+    .badge {
+      display: inline-block;
+      padding: 1px 4px;
+      border-radius: 4px;
+      font-size: 6pt;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.2px;
+    }
+
+    .badge-strategic { background: #fee2e2; border: 1px solid #fca5a5; color: #b91c1c; }
+    .badge-bottleneck { background: #fef3c7; border: 1px solid #fcd34d; color: #b45309; }
+    .badge-leverage { background: #d1fae5; border: 1px solid #6ee7b7; color: #047857; }
+    .badge-noncritical { background: #f1f5f9; border: 1px solid #cbd5e1; color: #475569; }
+
+    .justifications {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .justification-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 10pt;
+      font-weight: 800;
+      color: #064e3b;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      border-bottom: 2px solid rgba(16, 185, 129, 0.15);
+      padding-bottom: 3px;
+      margin-bottom: 2px;
+    }
+
+    .item-card {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .item-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+
+    .item-name {
+      font-size: 8.5pt;
+      font-weight: 800;
+      color: #064e3b;
+    }
+
+    .item-desc {
+      font-size: 7.8pt;
+      color: #475569;
+      text-align: justify;
+      line-height: 1.3;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==========================================
+       SLIDE 1: TARGET INDUSTRIAL CONCEPT (AI-GENERATED)
+       ========================================== -->
+  <div class="slide" id="slide1" style="padding: 0;">
+    <div class="cover-layout">
+      <img class="cover-image" src="file:///Users/Abir/Desktop/innovation project/Gemini_Generated_Image_s66owns66owns66o.png" alt="Target Concept">
+      
+      <div class="cover-overlay">
+        <span class="cover-eyebrow">✦ Team 22 · Upstream Sourcing Slides</span>
+        <h1 class="cover-title">Urban Glow Grid</h1>
+        <p class="cover-subtitle">Target Design Concept: IoT-Enabled Sustainable City Micro-Grid Simulator</p>
+        
+        <div class="cover-footer">
+          <div>Deliverable: <strong>Day 1 Sourcing &amp; BOM Presentation</strong></div>
+          <div>UTSEUS 2026 · <strong>Abir, Ismail, Sofiane, Mohamed, Nouh</strong></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       SLIDE 2: PHYSICAL MVP PHOTOGRAPHS & CALLOUTS
+       ========================================== -->
+  <div class="slide" id="slide2">
+    <div class="header">
+      <h2>
+        <svg class="header-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+        <span>Physical MVP Prototype Architecture</span>
+      </h2>
+      <div class="slide-meta">Component Placement &amp; Layout</div>
+    </div>
+
+    <div class="grid-2col">
+      <!-- Left side: Prototype photos -->
+      <div class="photos-row">
+        <div class="photo-container">
+          <img src="file:///Users/Abir/Desktop/innovation project/IMG_7003.jpg" alt="MVP Top View">
+          <div class="photo-caption">Top Interface: Control Console &amp; Wood Grid</div>
+        </div>
+        <div class="photo-container">
+          <img src="file:///Users/Abir/Desktop/innovation project/IMG_7005.jpg" alt="MVP Bottom View">
+          <div class="photo-caption">Bottom Circuitry: Microcontroller &amp; Routing</div>
+        </div>
+      </div>
+
+      <!-- Right side: Component descriptions -->
+      <div class="col" style="display: flex; flex-direction: column; justify-content: center;">
+        <div class="card">
+          <h4>1. Top Elevation Wood Chassis</h4>
+          <p>
+            The topography is laser-cut from <b>7 Birch plywood panels</b> representing the elevation contours of Paris, securely structured by <b>8 wood pillars</b>. <b>21 translucent building diffusers</b> are nested directly into CNC-milled slot coordinates.
+          </p>
+        </div>
+
+        <div class="card">
+          <h4>2. Control &amp; Display Console</h4>
+          <p>
+            User interactions are processed via <b>6 rotary potentiometers</b> (adjusting solar/wind intensity) and <b>3 arcade action buttons</b>. System state is visualized on a <b>0.96-inch OLED screen</b> and <b>3 classic status LEDs</b>.
+          </p>
+        </div>
+
+        <div class="card">
+          <h4>3. Embedded Controller &amp; Multiplexing</h4>
+          <p>
+            An <b>Arduino Uno</b> processes user inputs and drives <b>6 addressable WS2812B RGB stripes</b>. To resolve the analog pin limit, an <b>MCP3008 ADC multiplexer chip</b> reads all potentiometers over SPI, wired on a <b>170-tie breadboard</b>.
+          </p>
+        </div>
+
+        <div class="card">
+          <h4>4. Power &amp; Audio Alerts</h4>
+          <p>
+            An external <b>5V 4A power supply adapter</b> delivers clean power, regulated by a latching rocker <b>Power Switch</b>. <b>Dual 8-ohm speakers</b> trigger real-time sound cues to alert users of grid overloads.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <span class="footer-brand">Urban Glow Grid</span>
+      <div>Day 1 Sourcing · Slide 2 of 3</div>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       SLIDE 3: COMPREHENSIVE BILL OF MATERIALS (BOM)
+       ========================================== -->
+  <div class="slide" id="slide3">
+    <div class="header">
+      <h2>
+        <svg class="header-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+        <span>Prototype Bill of Materials &amp; Upstream Sourcing</span>
+      </h2>
+      <div class="slide-meta">Low-Cost Taobao Pricing Worksheet</div>
+    </div>
+
+    <div class="grid-2col">
+      <!-- Left side: BOM Table -->
+      <div class="bom-table-container">
+        <table>
+          <thead>
+            <tr>
+              <th style="width: 34%;">Component / Material</th>
+              <th style="width: 6%; text-align: center;">Qty</th>
+              <th style="width: 15%; text-align: right;">Proto Unit (CNY)</th>
+              <th style="width: 15%; text-align: right;">Proto Total (CNY)</th>
+              <th style="width: 15%; text-align: right;">Bulk Unit (CNY)</th>
+              <th style="width: 15%; text-align: right;">Bulk Total (CNY)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>3D Printed Buildings (diffusers)</td>
+              <td style="text-align: center;">21</td>
+              <td style="text-align: right;">2.00</td>
+              <td style="text-align: right;">42.00</td>
+              <td style="text-align: right;">0.20</td>
+              <td style="text-align: right;">4.20</td>
+            </tr>
+            <tr>
+              <td>Laser-Cut Base Wood Panels</td>
+              <td style="text-align: center;">7</td>
+              <td style="text-align: right;">3.00</td>
+              <td style="text-align: right;">21.00</td>
+              <td style="text-align: right;">0.80</td>
+              <td style="text-align: right;">5.60</td>
+            </tr>
+            <tr>
+              <td>3D Printed Landscape Details</td>
+              <td style="text-align: center;">20</td>
+              <td style="text-align: right;">0.50</td>
+              <td style="text-align: right;">10.00</td>
+              <td style="text-align: right;">0.05</td>
+              <td style="text-align: right;">1.00</td>
+            </tr>
+            <tr>
+              <td>Addressable WS2812B LED Stripes</td>
+              <td style="text-align: center;">6</td>
+              <td style="text-align: right;">2.00</td>
+              <td style="text-align: right;">12.00</td>
+              <td style="text-align: right;">0.60</td>
+              <td style="text-align: right;">3.60</td>
+            </tr>
+            <tr>
+              <td>Arduino Uno Board (Microcontroller)</td>
+              <td style="text-align: center;">1</td>
+              <td style="text-align: right;">15.00</td>
+              <td style="text-align: right;">15.00</td>
+              <td style="text-align: right;">2.00</td>
+              <td style="text-align: right;">2.00</td>
+            </tr>
+            <tr>
+              <td>Push Buttons (Arcade Action)</td>
+              <td style="text-align: center;">3</td>
+              <td style="text-align: right;">1.00</td>
+              <td style="text-align: right;">3.00</td>
+              <td style="text-align: right;">0.30</td>
+              <td style="text-align: right;">0.90</td>
+            </tr>
+            <tr>
+              <td>Wood Pillars (Support Dowels)</td>
+              <td style="text-align: center;">8</td>
+              <td style="text-align: right;">0.50</td>
+              <td style="text-align: right;">4.00</td>
+              <td style="text-align: right;">0.10</td>
+              <td style="text-align: right;">0.80</td>
+            </tr>
+            <tr>
+              <td>Power Switch (On/Off Rocker)</td>
+              <td style="text-align: center;">1</td>
+              <td style="text-align: right;">1.00</td>
+              <td style="text-align: right;">1.00</td>
+              <td style="text-align: right;">0.20</td>
+              <td style="text-align: right;">0.20</td>
+            </tr>
+            <tr>
+              <td>Power Supply Adapter (5V 4A)</td>
+              <td style="text-align: center;">1</td>
+              <td style="text-align: right;">12.00</td>
+              <td style="text-align: right;">12.00</td>
+              <td style="text-align: right;">4.00</td>
+              <td style="text-align: right;">4.00</td>
+            </tr>
+            <tr>
+              <td>Potentiometers (B10K Rotary Dials)</td>
+              <td style="text-align: center;">6</td>
+              <td style="text-align: right;">0.50</td>
+              <td style="text-align: right;">3.00</td>
+              <td style="text-align: right;">0.20</td>
+              <td style="text-align: right;">1.20</td>
+            </tr>
+            <tr>
+              <td>Connecting Wires (Jumper Cables)</td>
+              <td style="text-align: center;">54</td>
+              <td style="text-align: right;">0.05</td>
+              <td style="text-align: right;">2.70</td>
+              <td style="text-align: right;">0.01</td>
+              <td style="text-align: right;">0.54</td>
+            </tr>
+            <tr>
+              <td>Breadboard (Prototype Matrix)</td>
+              <td style="text-align: center;">1</td>
+              <td style="text-align: right;">5.00</td>
+              <td style="text-align: right;">5.00</td>
+              <td style="text-align: right;">0.00</td>
+              <td style="text-align: right;">0.00</td>
+            </tr>
+            <tr>
+              <td>Analog Multiplexer (MCP3008 ADC)</td>
+              <td style="text-align: center;">1</td>
+              <td style="text-align: right;">4.00</td>
+              <td style="text-align: right;">4.00</td>
+              <td style="text-align: right;">1.00</td>
+              <td style="text-align: right;">1.00</td>
+            </tr>
+            <tr>
+              <td>Scotch Adhesive Mounting Tape</td>
+              <td style="text-align: center;">21</td>
+              <td style="text-align: right;">0.10</td>
+              <td style="text-align: right;">2.10</td>
+              <td style="text-align: right;">0.02</td>
+              <td style="text-align: right;">0.42</td>
+            </tr>
+            <tr>
+              <td>OLED Display (128x64 I2C Screen)</td>
+              <td style="text-align: center;">1</td>
+              <td style="text-align: right;">6.00</td>
+              <td style="text-align: right;">6.00</td>
+              <td style="text-align: right;">2.50</td>
+              <td style="text-align: right;">2.50</td>
+            </tr>
+            <tr>
+              <td>Sticks of Glue (Hot Melt Adhesive)</td>
+              <td style="text-align: center;">3</td>
+              <td style="text-align: right;">1.00</td>
+              <td style="text-align: right;">3.00</td>
+              <td style="text-align: right;">0.20</td>
+              <td style="text-align: right;">0.60</td>
+            </tr>
+            <tr>
+              <td>Resistors (10k Ohm Signal Damping)</td>
+              <td style="text-align: center;">2</td>
+              <td style="text-align: right;">0.10</td>
+              <td style="text-align: right;">0.20</td>
+              <td style="text-align: right;">0.02</td>
+              <td style="text-align: right;">0.04</td>
+            </tr>
+            <tr>
+              <td>Speakers (8-Ohm Audio Alerts)</td>
+              <td style="text-align: center;">2</td>
+              <td style="text-align: right;">1.50</td>
+              <td style="text-align: right;">3.00</td>
+              <td style="text-align: right;">0.50</td>
+              <td style="text-align: right;">1.00</td>
+            </tr>
+            <tr>
+              <td>Classic LEDs (Status Indicators)</td>
+              <td style="text-align: center;">3</td>
+              <td style="text-align: right;">0.33</td>
+              <td style="text-align: right;">1.00</td>
+              <td style="text-align: right;">0.10</td>
+              <td style="text-align: right;">0.30</td>
+            </tr>
+            <tr class="total-row">
+              <td colspan="3">TOTAL RAW HARDWARE BOM COST</td>
+              <td style="text-align: right;">150.00 CNY</td>
+              <td colspan="1"></td>
+              <td style="text-align: right;">30.00 CNY</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Right side: Sourcing Decisions -->
+      <div class="justifications">
+        <div class="justification-title">Upstream Sourcing Strategy</div>
+
+        <div class="item-card">
+          <div class="item-header">
+            <span class="item-name">1. Pearl River Delta Sourcing (Raw Electronics)</span>
+            <span class="badge badge-strategic" style="background:#eff6ff; border:1px solid #bfdbfe; color:#1d4ed8;">PRD (Shenzhen)</span>
+          </div>
+          <p class="item-desc">
+            All chipsets (Arduino MCU, MCP3008 multiplexer), sensors, the OLED display, addressable LED stripes, speakers, and the breadboard are sourced from Shenzhen wholesale hubs to secure lowest-cost component integrations.
+          </p>
+        </div>
+
+        <div class="item-card">
+          <div class="item-header">
+            <span class="item-name">2. Yangtze River Delta Sourcing (Chassis &amp; Molding)</span>
+            <span class="badge badge-strategic" style="background:#eff6ff; border:1px solid #bfdbfe; color:#1d4ed8;">YRD (Taizhou / Jiashan)</span>
+          </div>
+          <p class="item-desc">
+            Birch timber panels and pillars are procured from local YRD wood mills, while translucent SLA prints are handled by high-throughput Taizhou bureaus. This nearby industrial integration reduces logistics costs and shipping delays.
+          </p>
+        </div>
+
+        <div class="item-card">
+          <div class="item-header">
+            <span class="item-name">3. Solderless Breadboard &amp; Rocker Switch Integration</span>
+            <span class="badge badge-strategic" style="background:#eff6ff; border:1px solid #bfdbfe; color:#1d4ed8;">Taobao Distributors</span>
+          </div>
+          <p class="item-desc">
+            Using a centralized 170-tie breadboard for the analog multiplexer prevents manual wire soldering, allowing easy circuit diagnostic testing. The rocker power switch ensures safe local physical power disconnects.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <span class="footer-brand">Urban Glow Grid</span>
+      <div>Day 1 Sourcing · Slide 3 of 3</div>
+    </div>
+  </div>
+
+</body>
+</html>
+"""
+
+async def main():
+    scale_up_dir = Path("/Users/Abir/Desktop/innovation project/scale up")
+    scale_up_dir.mkdir(parents=True, exist_ok=True)
+    
+    html_file = scale_up_dir / "sourcing_slide.html"
+    pdf_file = scale_up_dir / "team22_urbanglowgrid_sourcing.pdf"
+    
+    # Write the clean minimalist HTML content
+    html_file.write_text(HTML_CONTENT, encoding="utf-8")
+    print(f"Written minimalist HTML to {html_file.absolute()}")
+
+    print("Launching browser via Playwright...")
+    async with async_playwright() as p:
+        browser = await p.chromium.launch()
+        page = await browser.new_page()
+        
+        # Load the HTML file
+        filepath = os.path.abspath(str(html_file))
+        await page.goto(f"file://{filepath}", wait_until="domcontentloaded")
+        
+        # Wait for Google Fonts to load
+        print("Waiting for page assets and fonts to load...")
+        await page.wait_for_timeout(2000)
+        
+        # Emulate print media
+        await page.emulate_media(media="print")
+        
+        # Generate the PDF in landscape A4, with no margins for full-bleed background layout
+        print("Generating PDF...")
+        await page.pdf(
+            path=str(pdf_file),
+            format="A4",
+            landscape=True,
+            print_background=True,
+            margin={"top": "0", "bottom": "0", "left": "0", "right": "0"}
+        )
+        
+        await browser.close()
+        print(f"✅ Sourcing PDF successfully generated:\n  - {pdf_file.absolute()}")
+
+if __name__ == "__main__":
+    asyncio.run(main())

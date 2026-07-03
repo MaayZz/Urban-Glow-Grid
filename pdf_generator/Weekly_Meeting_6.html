@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Weekly Meeting #6 – Urban Glow Grid</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+        @page { size: A4; margin: 20mm; }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: #1a1a2e;
+            background: white;
+            line-height: 1.6;
+        }
+
+        /* ── HEADER ── */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 3px solid #1db954;
+            padding-bottom: 14px;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 26px;
+            font-weight: 800;
+            color: #2c3e50;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        .header .sub {
+            font-size: 13px;
+            color: #7f8c8d;
+            margin-top: 3px;
+        }
+
+        .logo-wrapper { flex-shrink: 0; }
+
+        /* ── DATE CARD ── */
+        .date-card {
+            background: linear-gradient(135deg, #1a1a2e 0%, #2c3e50 100%);
+            color: white;
+            border-radius: 10px;
+            padding: 20px 28px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 32px;
+        }
+
+        .date-left {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .cal {
+            width: 54px;
+            height: 54px;
+            background: #1db954;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .cal-m { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #1a1a2e; }
+        .cal-d { font-size: 24px; font-weight: 800; color: #1a1a2e; line-height: 1; }
+
+        .date-text h2 { font-size: 18px; font-weight: 700; }
+        .date-text p  { font-size: 12px; color: #b2bec3; margin-top: 2px; }
+
+        .time-block { text-align: right; }
+        .time-main  { font-size: 30px; font-weight: 800; color: #1db954; line-height: 1; }
+        .time-end   { font-size: 14px; color: #b2bec3; margin-top: 3px; }
+        .duration   {
+            display: inline-block;
+            background: rgba(29,185,84,0.2);
+            color: #1db954;
+            padding: 2px 10px;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-top: 4px;
+        }
+
+        /* ── SECTIONS ── */
+        .section { margin-bottom: 26px; }
+
+        .section-title {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.4px;
+            color: #0f9044;
+            border-bottom: 1px solid #e8f5e9;
+            padding-bottom: 6px;
+            margin-bottom: 14px;
+        }
+
+        /* ── AGENDA ── */
+        .agenda { width: 100%; border-collapse: collapse; font-size: 13px; }
+
+        .agenda thead tr { background: #2c3e50; color: white; }
+
+        .agenda thead th {
+            padding: 9px 14px;
+            text-align: left;
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+
+        .agenda tbody tr:nth-child(even) { background: #f8f9fc; }
+
+        .agenda td {
+            padding: 10px 14px;
+            border-bottom: 1px solid #ecf0f1;
+            vertical-align: middle;
+        }
+
+        .t { font-weight: 700; color: #0f9044; width: 80px; }
+
+        .tag {
+            background: #e8f5e9;
+            color: #0f9044;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        /* ── TEAM ── */
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        .team-card {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: #f8f9fc;
+            border: 1px solid #e8ecef;
+            border-radius: 8px;
+            padding: 11px 14px;
+        }
+
+        .avatar {
+            width: 38px; height: 38px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700; font-size: 14px; color: white; flex-shrink: 0;
+        }
+        .a1 { background: linear-gradient(135deg,#1db954,#0f9044); }
+        .a2 { background: linear-gradient(135deg,#3498db,#2980b9); }
+        .a3 { background: linear-gradient(135deg,#e74c3c,#c0392b); }
+
+        .t-name { font-size: 13px; font-weight: 700; color: #2c3e50; }
+        .t-role { font-size: 11px; color: #7f8c8d; }
+
+        /* ── PROGRESS BAR ── */
+        .progress-block {
+            background: #f8f9fc;
+            border: 1px solid #e8ecef;
+            border-radius: 8px;
+            padding: 14px 16px;
+            margin-bottom: 12px;
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+        }
+
+        .progress-label span {
+            font-size: 12px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .progress-label .pct {
+            font-size: 12px;
+            font-weight: 700;
+            color: #0f9044;
+        }
+
+        .bar-bg {
+            background: #e8ecef;
+            border-radius: 6px;
+            height: 7px;
+            overflow: hidden;
+        }
+
+        .bar-fill {
+            height: 100%;
+            border-radius: 6px;
+            background: linear-gradient(90deg, #1db954, #0f9044);
+        }
+
+        /* ── DISCUSSION ── */
+        .discussion-card {
+            background: #f8f9fc;
+            border: 1px solid #e8ecef;
+            border-left: 4px solid #1db954;
+            border-radius: 8px;
+            padding: 16px 20px;
+            margin-bottom: 10px;
+        }
+
+        .discussion-card h3 {
+            font-size: 13px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 8px;
+        }
+
+        .discussion-card ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .discussion-card ul li {
+            font-size: 12.5px;
+            color: #444;
+            padding-left: 16px;
+            position: relative;
+        }
+
+        .discussion-card ul li::before {
+            content: '—';
+            position: absolute;
+            left: 0;
+            color: #1db954;
+            font-weight: 700;
+        }
+
+        .key-details {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .kd-item {
+            background: white;
+            border: 1px solid #e8ecef;
+            border-radius: 6px;
+            padding: 10px 12px;
+        }
+
+        .kd-label {
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: #0f9044;
+            margin-bottom: 3px;
+        }
+
+        .kd-value {
+            font-size: 12px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        /* ── ACTION ITEMS ── */
+        .action-table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+
+        .action-table thead tr { background: #0f4d26; color: white; }
+
+        .action-table thead th {
+            padding: 8px 12px;
+            text-align: left;
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+
+        .action-table tbody tr:nth-child(even) { background: #f8f9fc; }
+
+        .action-table td {
+            padding: 9px 12px;
+            border-bottom: 1px solid #ecf0f1;
+            vertical-align: middle;
+        }
+
+        .badge-open {
+            background: #fef3c7;
+            color: #92400e;
+            padding: 2px 8px;
+            border-radius: 8px;
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        .badge-done {
+            background: #d1fae5;
+            color: #065f46;
+            padding: 2px 8px;
+            border-radius: 8px;
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        /* ── FOOTER ── */
+        .footer {
+            margin-top: 28px;
+            border-top: 1px solid #e8ecef;
+            padding-top: 13px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-text { font-size: 11px; color: #b2bec3; text-align: right; }
+        .footer-text strong { color: #7f8c8d; }
+
+        @media print {
+            body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <div class="header">
+        <div>
+            <h1>Urban Glow Grid</h1>
+            <div class="sub">Weekly Team Meeting &nbsp;·&nbsp; Week 6 &nbsp;·&nbsp; Innovation Project</div>
+        </div>
+        <div class="logo-wrapper">
+            <svg width="130" height="56" viewBox="0 0 130 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <line x1="0"  y1="38" x2="54" y2="38" stroke="#d1d5db" stroke-width="1"/>
+                <line x1="0"  y1="46" x2="54" y2="46" stroke="#d1d5db" stroke-width="1"/>
+                <line x1="8"  y1="30" x2="8"  y2="56" stroke="#d1d5db" stroke-width="1"/>
+                <line x1="20" y1="30" x2="20" y2="56" stroke="#d1d5db" stroke-width="1"/>
+                <line x1="32" y1="30" x2="32" y2="56" stroke="#d1d5db" stroke-width="1"/>
+                <line x1="44" y1="30" x2="44" y2="56" stroke="#d1d5db" stroke-width="1"/>
+                <circle cx="24" cy="20" r="14" fill="#0f9044" opacity="0.12"/>
+                <circle cx="24" cy="20" r="9"  fill="#1db954" opacity="0.25"/>
+                <circle cx="24" cy="20" r="5"  fill="#1db954"/>
+                <line x1="24" y1="4"  x2="24" y2="8"  stroke="#1db954" stroke-width="1.5" stroke-linecap="round"/>
+                <line x1="24" y1="32" x2="24" y2="36" stroke="#1db954" stroke-width="1.5" stroke-linecap="round"/>
+                <line x1="8"  y1="20" x2="12" y2="20" stroke="#1db954" stroke-width="1.5" stroke-linecap="round"/>
+                <line x1="36" y1="20" x2="40" y2="20" stroke="#1db954" stroke-width="1.5" stroke-linecap="round"/>
+                <line x1="13" y1="9"  x2="16" y2="12" stroke="#1db954" stroke-width="1.2" stroke-linecap="round"/>
+                <line x1="32" y1="28" x2="35" y2="31" stroke="#1db954" stroke-width="1.2" stroke-linecap="round"/>
+                <line x1="35" y1="9"  x2="32" y2="12" stroke="#1db954" stroke-width="1.2" stroke-linecap="round"/>
+                <line x1="13" y1="28" x2="16" y2="25" stroke="#1db954" stroke-width="1.2" stroke-linecap="round"/>
+                <text x="56" y="16" font-family="'Inter', Arial, sans-serif" font-size="13" font-weight="700" fill="#111" letter-spacing="0.3">URBAN</text>
+                <text x="56" y="30" font-family="'Inter', Arial, sans-serif" font-size="13" font-weight="700" fill="#1db954" letter-spacing="0.3">GLOW</text>
+                <text x="56" y="44" font-family="'Inter', Arial, sans-serif" font-size="13" font-weight="300" fill="#6b7280" letter-spacing="2">GRID</text>
+                <line x1="56" y1="48" x2="126" y2="48" stroke="#1db954" stroke-width="1.5" opacity="0.4"/>
+            </svg>
+        </div>
+    </div>
+
+    <!-- DATE CARD -->
+    <div class="date-card">
+        <div class="date-left">
+            <div class="cal">
+                <div class="cal-m">May</div>
+                <div class="cal-d">22</div>
+            </div>
+            <div class="date-text">
+                <h2>Friday, May 22nd, 2026</h2>
+                <p>Weekly check-in #6 &mdash; Urban Glow Grid team</p>
+            </div>
+        </div>
+        <div class="time-block">
+            <div class="time-main">18:00</div>
+            <div class="time-end">→ 19:30</div>
+            <div class="duration">90 min</div>
+        </div>
+    </div>
+
+    <!-- AGENDA -->
+    <div class="section">
+        <div class="section-title">📋 Agenda</div>
+        <table class="agenda">
+            <thead>
+                <tr>
+                    <th>Time</th>
+                    <th>Topic</th>
+                    <th>Owner</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="t">18:00</td>
+                    <td>Opening &amp; Review of Meeting #5 Action Items</td>
+                    <td><span class="tag">All</span></td>
+                </tr>
+                <tr>
+                    <td class="t">18:15</td>
+                    <td>Physical Integration: LED wiring and spatial routing</td>
+                    <td><span class="tag">Sofiane</span></td>
+                </tr>
+                <tr>
+                    <td class="t">18:40</td>
+                    <td>Simulator: Color-blind modes &amp; accessibility</td>
+                    <td><span class="tag">Mohamed</span></td>
+                </tr>
+                <tr>
+                    <td class="t">19:05</td>
+                    <td>Backend/Data: Sensor simulator data stream</td>
+                    <td><span class="tag">Abir</span></td>
+                </tr>
+                <tr>
+                    <td class="t">19:20</td>
+                    <td>Next Steps: Preparation for final deliverables</td>
+                    <td><span class="tag">All</span></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- TEAM -->
+    <div class="section">
+        <div class="section-title">👥 Attendees</div>
+        <div class="team-grid">
+            <div class="team-card">
+                <div class="avatar a1">AI</div>
+                <div>
+                    <div class="t-name">Abir ISLAM</div>
+                    <div class="t-role">CEO / Project Lead</div>
+                </div>
+            </div>
+            <div class="team-card">
+                <div class="avatar a2">SL</div>
+                <div>
+                    <div class="t-name">Sofiane LACHHAB</div>
+                    <div class="t-role">CTO / Physical Planner</div>
+                </div>
+            </div>
+            <div class="team-card">
+                <div class="avatar a3">MM</div>
+                <div>
+                    <div class="t-name">Mohamed MELLOUK</div>
+                    <div class="t-role">Creative Director</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PROJECT PROGRESS -->
+    <div class="section">
+        <div class="section-title">📊 Project Progress — Week 6</div>
+        <div class="progress-block">
+            <div class="progress-label">
+                <span>3D Simulator Core</span>
+                <span class="pct">88%</span>
+            </div>
+            <div class="bar-bg"><div class="bar-fill" style="width:88%;"></div></div>
+        </div>
+        <div class="progress-block">
+            <div class="progress-label">
+                <span>Energy Data Integration</span>
+                <span class="pct">70%</span>
+            </div>
+            <div class="bar-bg"><div class="bar-fill" style="width:70%;"></div></div>
+        </div>
+        <div class="progress-block">
+            <div class="progress-label">
+                <span>UX / UI Design (Overlays)</span>
+                <span class="pct">80%</span>
+            </div>
+            <div class="bar-bg"><div class="bar-fill" style="width:80%;"></div></div>
+        </div>
+        <div class="progress-block">
+            <div class="progress-label">
+                <span>Documentation &amp; Charter</span>
+                <span class="pct">98%</span>
+            </div>
+            <div class="bar-bg"><div class="bar-fill" style="width:98%;"></div></div>
+        </div>
+    </div>
+
+    <!-- KEY DISCUSSIONS -->
+    <div class="section">
+        <div class="section-title">💬 Key Discussions</div>
+
+        <div class="key-details">
+            <div class="kd-item">
+                <div class="kd-label">Main Focus</div>
+                <div class="kd-value">Integration &amp; Accessibility</div>
+            </div>
+            <div class="kd-item">
+                <div class="kd-label">Status</div>
+                <div class="kd-value">Prototyping Finalized ✓</div>
+            </div>
+            <div class="kd-item">
+                <div class="kd-label">Next Target</div>
+                <div class="kd-value">Final Packaging</div>
+            </div>
+        </div>
+
+        <div class="discussion-card" style="margin-top:10px;">
+            <h3>Project Advancement — Meeting #6</h3>
+            <ul>
+                <li><strong>Physical Model Setup:</strong> Sofiane presented the optimized hardware wiring schematic. The physical LED strip connections and fiber-optic routing grooves are carved exactly 5mm into the wood base, preventing wood warping or cable pinching.</li>
+                <li><strong>Color-Blind Accessibility:</strong> Mohamed showcased custom SVG filters implemented directly in the simulator styling, accommodating Deuteranopia and Protanopia. The energy intensity glow transitions seamlessly using highly distinguishable brightness and contrast cues.</li>
+                <li><strong>Sensor Simulator WebSocket Stream:</strong> Abir demonstrated a mock WebSocket server that broadcasts localized city sensor energy load rates. This links the simulator core seamlessly to mock hardware data inputs.</li>
+                <li><strong>GenAI Assistant Dossier Structure:</strong> The prompt-engineering library has been refined, logging 10 structured prompts. The crew confirmed the "Human-in-the-Loop" logic checks for scale modeling are thoroughly documented.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- ACTION ITEMS TABLE -->
+    <div class="section">
+        <div class="section-title">✅ Action Items Tracker</div>
+        <table class="action-table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Task</th>
+                    <th>Owner</th>
+                    <th>Due</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>Construct the wooden scale model and map layouts</td>
+                    <td>Sofiane</td>
+                    <td>May 29</td>
+                    <td><span class="badge-open">Open</span></td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>Compile GenAI Assistant Dossier reflections</td>
+                    <td>All</td>
+                    <td>May 29</td>
+                    <td><span class="badge-open">Open</span></td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>Write the final pitch presentation script</td>
+                    <td>Mohamed</td>
+                    <td>May 29</td>
+                    <td><span class="badge-open">Open</span></td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>Final polish of simulator UI &amp; responsiveness</td>
+                    <td>Abir</td>
+                    <td>May 29</td>
+                    <td><span class="badge-open">Open</span></td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td>Color-blind accessibility modes (from Mtg #5)</td>
+                    <td>Mohamed</td>
+                    <td>May 22</td>
+                    <td><span class="badge-done">Done ✓</span></td>
+                </tr>
+                <tr>
+                    <td>6</td>
+                    <td>Refine physical installation wiring layout (from Mtg #5)</td>
+                    <td>Sofiane</td>
+                    <td>May 22</td>
+                    <td><span class="badge-done">Done ✓</span></td>
+                </tr>
+                <tr>
+                    <td>7</td>
+                    <td>Prototype sensor simulation data link (from Mtg #5)</td>
+                    <td>Abir</td>
+                    <td>May 22</td>
+                    <td><span class="badge-done">Done ✓</span></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer">
+        <div></div>
+        <div class="footer-text">
+            <strong>Urban Glow Grid</strong> &nbsp;·&nbsp; Meeting #6 &nbsp;·&nbsp; May 22, 2026<br>
+            Smart City &nbsp;·&nbsp; Energy Mindfulness &nbsp;·&nbsp; Interactive Simulation
+        </div>
+    </div>
+
+</body>
+</html>

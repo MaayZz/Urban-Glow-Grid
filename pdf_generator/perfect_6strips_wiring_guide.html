@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Guide de Câblage Simplifié (6 Rubans, Sans Bouton) - Urban Glow Grid</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@400;500;600&display=swap');
+    
+    @page {
+      size: A4;
+      margin: 15mm 20mm 15mm 20mm;
+    }
+    
+    body {
+      font-family: 'Inter', sans-serif;
+      color: #1e293b;
+      line-height: 1.6;
+      background-color: #ffffff;
+      margin: 0;
+      padding: 0;
+    }
+
+    h1, h2, h3 {
+      font-family: 'Space Grotesk', sans-serif;
+      color: #0f172a;
+      margin-top: 0;
+    }
+
+    h1 {
+      font-size: 24px;
+      font-weight: 700;
+      border-bottom: 2px solid #3b82f6;
+      padding-bottom: 8px;
+      margin-bottom: 20px;
+    }
+
+    h2 {
+      font-size: 16px;
+      font-weight: 600;
+      color: #2563eb;
+      margin-top: 20px;
+      margin-bottom: 10px;
+      border-left: 4px solid #3b82f6;
+      padding-left: 8px;
+    }
+
+    p {
+      font-size: 13.5px;
+      margin-bottom: 15px;
+    }
+
+    .container {
+      max-width: 100%;
+    }
+
+    .header-box {
+      background: linear-gradient(135deg, #1e3b8a, #3b82f6);
+      color: #ffffff;
+      padding: 20px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+    }
+
+    .header-box h1 {
+      color: #ffffff;
+      border: none;
+      margin: 0 0 5px 0;
+      padding: 0;
+      font-size: 26px;
+    }
+
+    .header-box p {
+      margin: 0;
+      font-size: 13px;
+      opacity: 0.9;
+    }
+
+    .image-container {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .schematic-img {
+      width: 100%;
+      max-width: 500px;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+      border: 1px solid #e2e8f0;
+    }
+
+    .image-caption {
+      font-size: 11px;
+      color: #64748b;
+      margin-top: 6px;
+      font-style: italic;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+      font-size: 12px;
+    }
+
+    th, td {
+      padding: 8px 10px;
+      text-align: left;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    th {
+      background-color: #f8fafc;
+      color: #0f172a;
+      font-weight: 600;
+    }
+
+    tr:hover {
+      background-color: #f1f5f9;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 2px 5px;
+      border-radius: 4px;
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .badge-gnd { background-color: #334155; color: #ffffff; }
+    .badge-vcc { background-color: #ef4444; color: #ffffff; }
+    .badge-3v3 { background-color: #f97316; color: #ffffff; }
+    .badge-sda { background-color: #3b82f6; color: #ffffff; }
+    .badge-scl { background-color: #eab308; color: #000000; }
+    .badge-out { background-color: #10b981; color: #ffffff; }
+    .badge-spi { background-color: #8b5cf6; color: #ffffff; }
+
+    .card {
+      background-color: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 12px 15px;
+      margin-bottom: 15px;
+    }
+
+    .card h3 {
+      margin-top: 0;
+      margin-bottom: 6px;
+      font-size: 14px;
+      color: #1e3b8a;
+    }
+
+    .card ul {
+      margin: 0;
+      padding-left: 18px;
+      font-size: 12.5px;
+    }
+
+    .card li {
+      margin-bottom: 4px;
+    }
+
+    .footer {
+      font-size: 10px;
+      color: #94a3b8;
+      text-align: center;
+      margin-top: 20px;
+      border-top: 1px solid #e2e8f0;
+      padding-top: 8px;
+    }
+
+    .page-break {
+      page-break-before: always;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  
+  <div class="header-box">
+    <h1>Urban Glow Grid</h1>
+    <p>Guide de Câblage Simplifié – 6 Rubans LED Indépendants & Sans Bouton</p>
+  </div>
+
+  <div class="image-container">
+    <img src="urban_glow_grid_6strips_wiring.png" alt="Câblage 6 rubans" class="schematic-img">
+    <div class="image-caption">Schéma 3D du câblage optimal sur une seule breadboard.</div>
+  </div>
+
+  <h2>1. Instructions d'Assemblage</h2>
+  <p>
+    Ce câblage a été conçu pour tenir entièrement sur **une seule breadboard**, en supprimant tous les boutons pour fiabiliser le système.
+  </p>
+
+  <div class="card">
+    <h3>Étape 1 : Le MCP3008 et les 6 Potentiomètres</h3>
+    <ul>
+      <li>Place le **MCP3008** au centre de ta breadboard (encoche orientée vers le haut).</li>
+      <li>Alimentation du MCP3008 :
+        <ul>
+          <li>Pin 16 (VDD) et Pin 15 (VREF) ──► Connectées au rail **5V** de la breadboard.</li>
+          <li>Pin 9 (DGND) et Pin 14 (AGND) ──► Connectées au rail **GND** de la breadboard.</li>
+        </ul>
+      </li>
+      <li>Potentiomètres (B103) : Relie la patte gauche au GND, la patte droite au 5V, et la patte centrale aux entrées analogiques (Pins 1 à 6 du MCP3008).</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>Étape 2 : L'Écran OLED (Alimentation Isolée en 3.3V)</h3>
+    <ul>
+      <li>**VCC** de l'écran ──► Directement sur la broche **3.3V** de l'Arduino (l'isole des LED).</li>
+      <li>**GND** de l'écran ──► Connecté au rail bleu (**GND**) de la breadboard.</li>
+      <li>**SDA** de l'écran ──► Broche **A4** de l'Arduino.</li>
+      <li>**SCL** de l'écran ──► Broche **A5** de l'Arduino.</li>
+    </ul>
+  </div>
+
+  <div class="page-break"></div>
+
+  <h2>2. Tableau de Câblage Complet</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Broche Arduino</th>
+        <th>Type de Signal</th>
+        <th>Composant Connecté</th>
+        <th>Broche du Composant</th>
+        <th>Résistance de Protection</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>GND</strong></td>
+        <td><span class="badge badge-gnd">GND</span></td>
+        <td>Masse Commune (Tous)</td>
+        <td>Rail bleu de la breadboard</td>
+        <td>Aucune</td>
+      </tr>
+      <tr>
+        <td><strong>5V</strong></td>
+        <td><span class="badge badge-vcc">5V VCC</span></td>
+        <td>MCP3008, 6 Potentiomètres, 6 Rubans LED</td>
+        <td>VCC / VDD / VREF</td>
+        <td>Aucune</td>
+      </tr>
+      <tr>
+        <td><strong>3.3V</strong></td>
+        <td><span class="badge badge-3v3">3.3V VCC</span></td>
+        <td>Écran OLED SSD1306</td>
+        <td>VCC</td>
+        <td>Aucune</td>
+      </tr>
+      <tr>
+        <td><strong>A4</strong></td>
+        <td><span class="badge badge-sda">I2C SDA</span></td>
+        <td>Écran OLED</td>
+        <td>SDA</td>
+        <td>Aucune</td>
+      </tr>
+      <tr>
+        <td><strong>A5</strong></td>
+        <td><span class="badge badge-scl">I2C SCL</span></td>
+        <td>Écran OLED</td>
+        <td>SCL</td>
+        <td>Aucune</td>
+      </tr>
+      <tr>
+        <td><strong>D2</strong></td>
+        <td><span class="badge badge-out">NeoPixel Data</span></td>
+        <td>Ruban LED 1 (Zone 1)</td>
+        <td>Fil DIN (Données)</td>
+        <td>Aucune (ou 330Ω)</td>
+      </tr>
+      <tr>
+        <td><strong>D3</strong></td>
+        <td><span class="badge badge-out">NeoPixel Data</span></td>
+        <td>Ruban LED 2 (Zone 2)</td>
+        <td>Fil DIN (Données)</td>
+        <td>Aucune (ou 330Ω)</td>
+      </tr>
+      <tr>
+        <td><strong>D5</strong></td>
+        <td><span class="badge badge-out">NeoPixel Data</span></td>
+        <td>Ruban LED 3 (Zone 3)</td>
+        <td>Fil DIN (Données)</td>
+        <td>Aucune (ou 330Ω)</td>
+      </tr>
+      <tr>
+        <td><strong>D6</strong></td>
+        <td><span class="badge badge-out">NeoPixel Data</span></td>
+        <td>Ruban LED 4 (Zone 4)</td>
+        <td>Fil DIN (Données)</td>
+        <td>Aucune (ou 330Ω)</td>
+      </tr>
+      <tr>
+        <td><strong>D9</strong></td>
+        <td><span class="badge badge-out">NeoPixel Data</span></td>
+        <td>Ruban LED 5 (Zone 5)</td>
+        <td>Fil DIN (Données)</td>
+        <td>Aucune (ou 330Ω)</td>
+      </tr>
+      <tr>
+        <td><strong>D10</strong></td>
+        <td><span class="badge badge-out">NeoPixel Data</span></td>
+        <td>Ruban LED 6 (Zone 6)</td>
+        <td>Fil DIN (Données)</td>
+        <td>Aucune (ou 330Ω)</td>
+      </tr>
+      <tr>
+        <td><strong>D13</strong></td>
+        <td><span class="badge badge-out">PWM Audio</span></td>
+        <td>Haut-parleur (Speaker)</td>
+        <td>Fil Rouge (+) (Fil Noir sur GND)</td>
+        <td><strong>220Ω</strong> (Série)</td>
+      </tr>
+      <tr>
+        <td><strong>D4</strong></td>
+        <td><span class="badge badge-spi">SPI CS</span></td>
+        <td>MCP3008</td>
+        <td>Pin 10 (CS/SHDN)</td>
+        <td>Aucune</td>
+      </tr>
+      <tr>
+        <td><strong>D7</strong></td>
+        <td><span class="badge badge-spi">SPI CLK</span></td>
+        <td>MCP3008</td>
+        <td>Pin 13 (CLK)</td>
+        <td>Aucune</td>
+      </tr>
+      <tr>
+        <td><strong>D8</strong></td>
+        <td><span class="badge badge-spi">SPI DIN</span></td>
+        <td>MCP3008</td>
+        <td>Pin 11 (DIN)</td>
+        <td>Aucune</td>
+      </tr>
+      <tr>
+        <td><strong>D12</strong></td>
+        <td><span class="badge badge-spi">SPI DOUT</span></td>
+        <td>MCP3008</td>
+        <td>Pin 12 (DOUT)</td>
+        <td>Aucune</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="card">
+    <h3>Étape 3 : Raccordement des 6 Rubans LED 5V</h3>
+    <ul>
+      <li>Chaque ruban possède 3 fils : **+5V** (Rouge), **GND** (Noir/Blanc), et **DIN** (Données, Milieu).</li>
+      <li>Connecte tous les fils **+5V** des 6 rubans sur le rail rouge (+5V) de la breadboard.</li>
+      <li>Connecte tous les fils **GND** des 6 rubans sur le rail bleu (GND) de la breadboard.</li>
+      <li>Relie le fil **DIN** de chaque ruban à la broche Arduino correspondante (D2, D3, D5, D6, D9, D10).</li>
+    </ul>
+  </div>
+
+  <div class="footer">
+    Urban Glow Grid – Câblage Simplifié - 6 Rubans & 1 Breadboard - 2026
+  </div>
+
+</div>
+
+</body>
+</html>

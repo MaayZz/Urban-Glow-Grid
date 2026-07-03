@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Urban Glow Grid - Oral Script</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    @page { size: A4 portrait; margin: 0; }
+
+    body {
+      background-color: #f8fafc;
+      color: #0f172a;
+      font-family: 'Inter', sans-serif;
+      line-height: 1.5;
+      padding: 15mm 20mm;
+      width: 210mm;
+      min-height: 297mm;
+      box-sizing: border-box;
+    }
+
+    /* HEADER */
+    .header {
+      border-bottom: 3px solid #10b981;
+      padding-bottom: 12px;
+      margin-bottom: 24px;
+    }
+    .header h1 {
+      font-size: 24pt; font-weight: 800; color: #0f172a; letter-spacing: -0.5px;
+    }
+    .header .subtitle {
+      font-size: 11pt; color: #64748b; font-weight: 600; margin-top: 4px;
+    }
+
+    /* METRICS */
+    .metrics-bar {
+      display: flex; gap: 15px; margin-bottom: 30px;
+    }
+    .metric-card {
+      background: #fff; border: 1px solid #e2e8f0; border-radius: 8px;
+      padding: 12px 16px; flex: 1; display: flex; flex-direction: column;
+    }
+    .metric-card span { font-size: 9pt; color: #64748b; font-weight: 600; text-transform: uppercase; }
+    .metric-card strong { font-size: 13pt; color: #10b981; font-weight: 800; margin-top: 4px; }
+
+    /* SCRIPT CARDS */
+    .script-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+      overflow: hidden;
+      page-break-inside: avoid;
+    }
+
+    .card-header {
+      background: #f1f5f9;
+      border-bottom: 1px solid #e2e8f0;
+      padding: 12px 16px;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+
+    .slide-info {
+      display: flex; align-items: center; gap: 10px;
+    }
+    .slide-number {
+      background: #0f172a; color: #fff; font-weight: 700; font-size: 9pt;
+      padding: 4px 8px; border-radius: 4px;
+    }
+    .slide-info span:last-child {
+      font-weight: 700; color: #334155; font-size: 11pt;
+    }
+
+    .card-badges {
+      display: flex; gap: 8px;
+    }
+    .badge-speaker {
+      font-weight: 700; font-size: 9pt; padding: 4px 10px; border-radius: 12px;
+    }
+    .speaker-abir { background: #dbeafe; color: #1d4ed8; }
+    .speaker-mohamed { background: #ffedd5; color: #c2410c; }
+    .speaker-sofiane { background: #fce7f3; color: #be185d; }
+    .speaker-ismail { background: #fef08a; color: #854d0e; }
+    .badge-time {
+      background: #e2e8f0; color: #475569; font-weight: 600; font-size: 9pt;
+      padding: 4px 10px; border-radius: 12px; font-family: 'JetBrains Mono', monospace;
+    }
+
+    .speech-box {
+      padding: 16px; font-size: 12pt; color: #1e293b;
+    }
+    .speech-box p { margin-bottom: 0; }
+    
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <h1>🎙 Final Pitch Script</h1>
+    <div class="subtitle">Urban Glow Grid - 11 Slides Format</div>
+  </div>
+
+  <div class="metrics-bar">
+    <div class="metric-card">
+      <span>Total Time</span>
+      <strong>3:00 Minutes</strong>
+    </div>
+    <div class="metric-card">
+      <span>Format</span>
+      <strong>Startup Pitch</strong>
+    </div>
+    <div class="metric-card">
+      <span>Speakers</span>
+      <strong>4 Presenters</strong>
+    </div>
+  </div>
+
+  <!-- SLIDE 1 -->
+  <div class="script-card">
+    <div class="card-header">
+      <div class="slide-info"><span class="slide-number">Slide 1</span><span>Intro</span></div>
+      <div class="card-badges">
+        <span class="badge-speaker speaker-abir">Abir</span>
+        <span class="badge-time">0:00 - 0:10</span>
+      </div>
+    </div>
+    <div class="speech-box">
+      <p>"Good morning everyone. We are Team 22. This is Urban Glow Grid: a tangible way to master energy."</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 2 -->
+  <div class="script-card">
+    <div class="card-header">
+      <div class="slide-info"><span class="slide-number">Slide 2</span><span>The Problem</span></div>
+      <div class="card-badges">
+        <span class="badge-speaker speaker-abir">Abir</span>
+        <span class="badge-time">0:10 - 0:30</span>
+      </div>
+    </div>
+    <div class="speech-box">
+      <p>"Today, we face a critical problem: energy blindness. We consume energy blindly. We can't see it. This invisible action leads to wasteful habits and system strain. The final result? Blackouts. We need to fix this."</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 3 -->
+  <div class="script-card">
+    <div class="card-header">
+      <div class="slide-info"><span class="slide-number">Slide 3</span><span>Our Solution</span></div>
+      <div class="card-badges">
+        <span class="badge-speaker speaker-abir">Abir</span>
+        <span class="badge-time">0:30 - 0:50</span>
+      </div>
+    </div>
+    <div class="speech-box">
+      <p>"Our solution is right here: a 1 to 15,000 scale interactive model of Paris. Users act as Chief Engineers. They physically manage power fluctuations in real-time. We use bright LEDs to provide instant visual feedback on the grid's health."</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 4 -->
+  <div class="script-card">
+    <div class="card-header">
+      <div class="slide-info"><span class="slide-number">Slide 4</span><span>Why Play?</span></div>
+      <div class="card-badges">
+        <span class="badge-speaker speaker-mohamed">Mohamed</span>
+        <span class="badge-time">0:50 - 1:10</span>
+      </div>
+    </div>
+    <div class="speech-box">
+      <p>"Why play this game? To make abstract data physical. We replace boring apps with active physical engagement. Our ultimate goal is to empower citizens. We want to train people to save the grid."</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 5 -->
+  <div class="script-card">
+    <div class="card-header">
+      <div class="slide-info"><span class="slide-number">Slide 5</span><span>Gameplay</span></div>
+      <div class="card-badges">
+        <span class="badge-speaker speaker-mohamed">Mohamed</span>
+        <span class="badge-time">1:10 - 1:30</span>
+      </div>
+    </div>
+    <div class="speech-box">
+      <p>"The experience is simple. First, connect the zones blindly using potentiometers. Second, monitor the overall grid using our OLED visualizer. It uses universal colors: green for stable, red for danger. Your goal is to balance the power and prevent blackouts."</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 6 -->
+  <div class="script-card">
+    <div class="card-header">
+      <div class="slide-info"><span class="slide-number">Slide 6</span><span>Market</span></div>
+      <div class="card-badges">
+        <span class="badge-speaker speaker-ismail">Ismail</span>
+        <span class="badge-time">1:30 - 1:45</span>
+      </div>
+    </div>
+    <div class="speech-box">
+      <p>"Who is this for? We target two distinct markets. First, the B2B EdTech sector for schools adopting sustainability goals. Second, the B2G Smart City sector for municipalities wanting to actively engage their citizens."</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 7 -->
+  <div class="script-card">
+    <div class="card-header">
+      <div class="slide-info"><span class="slide-number">Slide 7</span><span>Financial</span></div>
+      <div class="card-badges">
+        <span class="badge-speaker speaker-ismail">Ismail</span>
+        <span class="badge-time">1:45 - 2:05</span>
+      </div>
+    </div>
+    <div class="speech-box">
+      <p>"From a financial perspective, this project is highly profitable. We used open-source components like Arduino and LEDs. Our Bill of Materials strictly totals under 200 RMB. This allows us to package high-margin educational kits while keeping hardware costs incredibly low."</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 8 -->
+  <div class="script-card">
+    <div class="card-header">
+      <div class="slide-info"><span class="slide-number">Slide 8</span><span>Scalability</span></div>
+      <div class="card-badges">
+        <span class="badge-speaker speaker-sofiane">Sofiane</span>
+        <span class="badge-time">2:05 - 2:25</span>
+      </div>
+    </div>
+    <div class="speech-box">
+      <p>"To scale production, we will move from breadboards to custom Printed Circuit Boards. This will reduce assembly time by 95%. Our modular architecture means we can ship miniature classroom kits, or build giant interactive installations for museums."</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 9 -->
+  <div class="script-card">
+    <div class="card-header">
+      <div class="slide-info"><span class="slide-number">Slide 9</span><span>Challenges</span></div>
+      <div class="card-badges">
+        <span class="badge-speaker speaker-sofiane">Sofiane</span>
+        <span class="badge-time">2:25 - 2:45</span>
+      </div>
+    </div>
+    <div class="speech-box">
+      <p>"Of course, building this was an engineering battle. We managed nearly 90 cables in a saturated space. We debugged unstable loose connections from jumper wires. And we meticulously balanced current to power LEDs and audio simultaneously."</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 10 -->
+  <div class="script-card">
+    <div class="card-header">
+      <div class="slide-info"><span class="slide-number">Slide 10</span><span>Why Us?</span></div>
+      <div class="card-badges">
+        <span class="badge-speaker speaker-abir">Abir</span>
+        <span class="badge-time">2:45 - 2:55</span>
+      </div>
+    </div>
+    <div class="speech-box">
+      <p>"Why us? Because Team 22 is the perfect blend of vision and engineering. We turned a complex prototype into a scalable product in just weeks."</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 11 -->
+  <div class="script-card">
+    <div class="card-header">
+      <div class="slide-info"><span class="slide-number">Slide 11</span><span>Conclusion</span></div>
+      <div class="card-badges">
+        <span class="badge-speaker speaker-abir">Abir</span>
+        <span class="badge-time">2:55 - 3:00</span>
+      </div>
+    </div>
+    <div class="speech-box">
+      <p>"Energy shouldn't be invisible. Master energy. Thank you, we are now ready for your questions."</p>
+    </div>
+  </div>
+
+</body>
+</html>

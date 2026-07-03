@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Quick Start Guide - Urban Glow Grid</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800;900&family=JetBrains+Mono:wght@700&display=swap');
+
+        @page { size: A4 landscape; margin: 0; }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #ffffff;
+            color: #0f172a;
+            width: 297mm;
+            height: 210mm;
+            padding: 12mm 15mm;
+            display: flex;
+            flex-direction: column;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+            overflow: hidden;
+        }
+
+        /* HEADER */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 4px solid #1db954;
+            padding-bottom: 8px;
+            margin-bottom: 12px;
+        }
+
+        .title-block h1 {
+            font-size: 32pt;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: -1px;
+            color: #0f172a;
+            line-height: 1;
+        }
+
+        .title-block h2 {
+            font-size: 14pt;
+            font-weight: 700;
+            color: #1db954;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-top: 4px;
+        }
+
+        .intro-text {
+            font-size: 11pt;
+            color: #475569;
+            max-width: 450px;
+            text-align: right;
+            font-weight: 500;
+        }
+
+        /* MAIN LAYOUT */
+        .main-content {
+            display: flex;
+            gap: 15px;
+            flex-grow: 1;
+            height: 100%;
+        }
+
+        /* LEFT: STEPS (2 columns inside) */
+        .steps-container {
+            flex: 2;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .step-card {
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .step-card h3 {
+            font-size: 15pt;
+            font-weight: 800;
+            color: #0f172a;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .step-number {
+            background: #1db954;
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14pt;
+            font-weight: 900;
+        }
+
+        .step-card p {
+            font-size: 10.5pt;
+            color: #475569;
+            line-height: 1.5;
+            margin-bottom: 10px;
+        }
+
+        .visual-box {
+            background: #ffffff;
+            border: 2px dashed #cbd5e1;
+            border-radius: 8px;
+            padding: 10px;
+            text-align: center;
+            margin-top: auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .visual-box.oled {
+            background: #0f172a;
+            border: none;
+            color: #1db954;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14pt;
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
+
+        .dial-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 4px solid #94a3b8;
+            position: relative;
+        }
+        .dial-icon::after {
+            content: '';
+            position: absolute;
+            top: 4px; left: 14px;
+            width: 4px; height: 12px;
+            background: #94a3b8;
+            border-radius: 2px;
+        }
+        
+        .led-green { color: #1db954; font-weight: 800; font-size: 16pt; }
+        .led-red { color: #ef4444; font-weight: 800; font-size: 16pt; }
+
+        /* RIGHT: OUTCOMES & UI EXPLANATION */
+        .sidebar {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .outcome-box {
+            padding: 15px;
+            border-radius: 12px;
+            flex: 1;
+        }
+
+        .outcome-box.victory {
+            background: #f0fdf4;
+            border: 2px solid #22c55e;
+        }
+
+        .outcome-box.defeat {
+            background: #fef2f2;
+            border: 2px solid #ef4444;
+        }
+
+        .outcome-box h3 {
+            font-size: 16pt;
+            font-weight: 900;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-transform: uppercase;
+        }
+
+        .victory h3 { color: #16a34a; }
+        .defeat h3 { color: #dc2626; }
+
+        .outcome-box ul {
+            list-style: none;
+            font-size: 10.5pt;
+            line-height: 1.5;
+        }
+
+        .outcome-box li {
+            margin-bottom: 8px;
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+        }
+        
+        .outcome-box li::before {
+            content: '►';
+            font-size: 9pt;
+            margin-top: 2px;
+        }
+
+        .victory li { color: #15803d; }
+        .victory li::before { color: #22c55e; }
+        .defeat li { color: #991b1b; }
+        .defeat li::before { color: #ef4444; }
+
+        .score-banner {
+            background: #16a34a;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            border-radius: 6px;
+            margin-top: 10px;
+            font-weight: 800;
+            font-size: 11pt;
+            text-transform: uppercase;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <div class="title-block">
+            <h1>Urban Glow Grid</h1>
+            <h2>Operator Quick Guide</h2>
+        </div>
+        <div class="intro-text">
+            Your objective is to balance the city's energy demand across 6 iconic zones. Prove your efficiency in under 3 minutes.
+        </div>
+    </div>
+
+    <div class="main-content">
+        
+        <!-- LEFT: INSTRUCTIONS GRID -->
+        <div class="steps-container">
+            
+            <div class="step-card">
+                <h3><div class="step-number">1</div> Initialize System</h3>
+                <p>Press the <strong>START</strong> button on the console to begin. You have exactly <strong>3 minutes</strong>.</p>
+                <p>The city's power grid will immediately become unstable, and the 6 zones will start offline.</p>
+                <div class="visual-box">
+                    <span style="font-size:24pt; color:#1db954;">▶</span>
+                    <strong style="font-size:14pt; color:#475569;">PRESS START</strong>
+                </div>
+            </div>
+
+            <div class="step-card">
+                <h3><div class="step-number">2</div> Connect Zones</h3>
+                <p>Gain control of the grid by connecting to all 6 zones. Turn each physical dial until the zone's LED indicator flashes <strong>GREEN</strong>.</p>
+                <p>Once connected, your dial actively controls that zone's energy output.</p>
+                <div class="visual-box">
+                    <div class="dial-icon"></div>
+                    <span style="font-size:16pt; color:#94a3b8;">→</span>
+                    <span class="led-green">● CONNECTED</span>
+                </div>
+            </div>
+
+            <div class="step-card">
+                <h3><div class="step-number">3</div> Balance The Grid</h3>
+                <p>The city's total energy load fluctuates constantly. Watch the OLED screen.</p>
+                <p>Adjust your dials to keep the consumption indicator (<code>=</code>) safely between the 2 vertical limit markers (<code>|</code>).</p>
+                <div class="visual-box oled">
+                    [--<span style="color:#fff">|</span>======<span style="color:#fff">|</span>--]
+                </div>
+            </div>
+
+            <div class="step-card">
+                <h3><div class="step-number">4</div> Prevent Blackouts</h3>
+                <p>If a zone is poorly optimized, it will disconnect and its LED will flash <strong>RED</strong>.</p>
+                <p>You must quickly turn its dial to reconnect it before the overall grid balance fails.</p>
+                <div class="visual-box" style="border-color:#fecaca; background:#fef2f2;">
+                    <div class="dial-icon" style="border-color:#ef4444;"></div>
+                    <span style="font-size:16pt; color:#ef4444;">→</span>
+                    <span class="led-red">● RECONNECT!</span>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- RIGHT: OUTCOMES -->
+        <div class="sidebar">
+            
+            <div class="outcome-box victory">
+                <h3>🏆 Mission Success</h3>
+                <ul>
+                    <li><strong>CONNECT ALL ZONES:</strong> Ensure all 6 zones are active (Green).</li>
+                    <li><strong>MAINTAIN BALANCE:</strong> Keep the grid perfectly stable (between limits) for <strong>5 consecutive seconds</strong>.</li>
+                    <li><strong>SURVIVE:</strong> Complete these tasks before the 3-minute timer runs out.</li>
+                </ul>
+                <div class="score-banner">
+                    Speedrun Score = Remaining Time
+                </div>
+            </div>
+
+            <div class="outcome-box defeat">
+                <h3>⚠️ System Failure</h3>
+                <ul>
+                    <li><strong>TIME OUT:</strong> The 3-minute timer expires before you stabilize the grid.</li>
+                    <li><strong>OVERLOAD (> 80%):</strong> The total energy exceeds the maximum limit (right side of the gauge).</li>
+                    <li><strong>UNDERLOAD (< 25%):</strong> The total energy drops below the minimum limit (left side of the gauge).</li>
+                </ul>
+                <div style="margin-top:10px; font-weight:700; color:#dc2626; text-align:center; font-size:11pt;">
+                    You have 2.5 seconds to fix limit breaches!
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+</html>

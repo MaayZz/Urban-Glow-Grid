@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Weekly Meeting #2 – Urban Glow Grid</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+        @page { size: A4; margin: 20mm; }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: #1a1a2e;
+            background: white;
+            line-height: 1.6;
+        }
+
+        /* HEADER */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 3px solid #2ecc71;
+            padding-bottom: 14px;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 26px;
+            font-weight: 800;
+            color: #2c3e50;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        .header .sub {
+            font-size: 13px;
+            color: #7f8c8d;
+            margin-top: 3px;
+        }
+
+        .logo-wrapper {
+            flex-shrink: 0;
+        }
+
+        /* DATE CARD */
+        .date-card {
+            background: linear-gradient(135deg, #1a1a2e 0%, #2c3e50 100%);
+            color: white;
+            border-radius: 10px;
+            padding: 20px 28px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 32px;
+        }
+
+        .date-left {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .cal {
+            width: 54px;
+            height: 54px;
+            background: #2ecc71;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .cal-m { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #1a1a2e; }
+        .cal-d { font-size: 24px; font-weight: 800; color: #1a1a2e; line-height: 1; }
+
+        .date-text h2 { font-size: 18px; font-weight: 700; }
+        .date-text p  { font-size: 12px; color: #b2bec3; margin-top: 2px; }
+
+        .time-block { text-align: right; }
+        .time-main  { font-size: 30px; font-weight: 800; color: #2ecc71; line-height: 1; }
+        .time-end   { font-size: 14px; color: #b2bec3; margin-top: 3px; }
+        .duration   {
+            display: inline-block;
+            background: rgba(46,204,113,0.2);
+            color: #2ecc71;
+            padding: 2px 10px;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-top: 4px;
+        }
+
+        /* SECTIONS */
+        .section { margin-bottom: 26px; }
+
+        .section-title {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.4px;
+            color: #27ae60;
+            border-bottom: 1px solid #e8f5e9;
+            padding-bottom: 6px;
+            margin-bottom: 14px;
+        }
+
+        /* AGENDA */
+        .agenda { width: 100%; border-collapse: collapse; font-size: 13px; }
+
+        .agenda thead tr { background: #2c3e50; color: white; }
+
+        .agenda thead th {
+            padding: 9px 14px;
+            text-align: left;
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+
+        .agenda tbody tr:nth-child(even) { background: #f8f9fc; }
+
+        .agenda td {
+            padding: 10px 14px;
+            border-bottom: 1px solid #ecf0f1;
+            vertical-align: middle;
+        }
+
+        .t { font-weight: 700; color: #27ae60; width: 80px; }
+
+        .tag {
+            background: #e8f5e9;
+            color: #27ae60;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        /* TEAM */
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .team-card {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: #f8f9fc;
+            border: 1px solid #e8ecef;
+            border-radius: 8px;
+            padding: 11px 14px;
+        }
+
+        .avatar {
+            width: 38px; height: 38px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700; font-size: 14px; color: white; flex-shrink: 0;
+        }
+        .a1 { background: linear-gradient(135deg,#2ecc71,#27ae60); }
+        .a2 { background: linear-gradient(135deg,#3498db,#2980b9); }
+        .a3 { background: linear-gradient(135deg,#e74c3c,#c0392b); }
+        .a4 { background: linear-gradient(135deg,#f39c12,#e67e22); }
+
+        .t-name { font-size: 13px; font-weight: 700; color: #2c3e50; }
+        .t-role { font-size: 11px; color: #7f8c8d; }
+
+        /* DISCUSSIONS */
+        .discussion-card {
+            background: #f8f9fc;
+            border: 1px solid #e8ecef;
+            border-left: 4px solid #2ecc71;
+            border-radius: 8px;
+            padding: 16px 20px;
+            margin-bottom: 10px;
+        }
+
+        .discussion-card h3 {
+            font-size: 13px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 8px;
+        }
+
+        .discussion-card ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .discussion-card ul li {
+            font-size: 12.5px;
+            color: #444;
+            padding-left: 16px;
+            position: relative;
+        }
+
+        .discussion-card ul li::before {
+            content: '—';
+            position: absolute;
+            left: 0;
+            color: #2ecc71;
+            font-weight: 700;
+        }
+
+        .key-details {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .kd-item {
+            background: white;
+            border: 1px solid #e8ecef;
+            border-radius: 6px;
+            padding: 10px 12px;
+        }
+
+        .kd-label {
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: #27ae60;
+            margin-bottom: 3px;
+        }
+
+        .kd-value {
+            font-size: 12px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        /* FOOTER */
+        .footer {
+            margin-top: 30px;
+            border-top: 1px solid #e8ecef;
+            padding-top: 13px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-text { font-size: 11px; color: #b2bec3; text-align: right; }
+        .footer-text strong { color: #7f8c8d; }
+
+        @media print {
+            body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <div class="header">
+        <div>
+            <h1>Urban Glow Grid</h1>
+            <div class="sub">Weekly Team Meeting &nbsp;·&nbsp; Innovation Project</div>
+        </div>
+        <div class="logo-wrapper">
+            <svg width="130" height="56" viewBox="0 0 130 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <line x1="0"  y1="38" x2="54" y2="38" stroke="#d1d5db" stroke-width="1"/>
+                <line x1="0"  y1="46" x2="54" y2="46" stroke="#d1d5db" stroke-width="1"/>
+                <line x1="8"  y1="30" x2="8"  y2="56" stroke="#d1d5db" stroke-width="1"/>
+                <line x1="20" y1="30" x2="20" y2="56" stroke="#d1d5db" stroke-width="1"/>
+                <line x1="32" y1="30" x2="32" y2="56" stroke="#d1d5db" stroke-width="1"/>
+                <line x1="44" y1="30" x2="44" y2="56" stroke="#d1d5db" stroke-width="1"/>
+                <circle cx="24" cy="20" r="14" fill="#0f9044" opacity="0.12"/>
+                <circle cx="24" cy="20" r="9"  fill="#1db954" opacity="0.25"/>
+                <circle cx="24" cy="20" r="5"  fill="#1db954"/>
+                <line x1="24" y1="4"  x2="24" y2="8"  stroke="#1db954" stroke-width="1.5" stroke-linecap="round"/>
+                <line x1="24" y1="32" x2="24" y2="36" stroke="#1db954" stroke-width="1.5" stroke-linecap="round"/>
+                <line x1="8"  y1="20" x2="12" y2="20" stroke="#1db954" stroke-width="1.5" stroke-linecap="round"/>
+                <line x1="36" y1="20" x2="40" y2="20" stroke="#1db954" stroke-width="1.5" stroke-linecap="round"/>
+                <line x1="13" y1="9"  x2="16" y2="12" stroke="#1db954" stroke-width="1.2" stroke-linecap="round"/>
+                <line x1="32" y1="28" x2="35" y2="31" stroke="#1db954" stroke-width="1.2" stroke-linecap="round"/>
+                <line x1="35" y1="9"  x2="32" y2="12" stroke="#1db954" stroke-width="1.2" stroke-linecap="round"/>
+                <line x1="13" y1="28" x2="16" y2="25" stroke="#1db954" stroke-width="1.2" stroke-linecap="round"/>
+                <text x="56" y="16" font-family="'Inter', Arial, sans-serif" font-size="13" font-weight="700" fill="#111" letter-spacing="0.3">URBAN</text>
+                <text x="56" y="30" font-family="'Inter', Arial, sans-serif" font-size="13" font-weight="700" fill="#1db954" letter-spacing="0.3">GLOW</text>
+                <text x="56" y="44" font-family="'Inter', Arial, sans-serif" font-size="13" font-weight="300" fill="#6b7280" letter-spacing="2">GRID</text>
+                <line x1="56" y1="48" x2="126" y2="48" stroke="#1db954" stroke-width="1.5" opacity="0.4"/>
+            </svg>
+        </div>
+    </div>
+
+    <!-- DATE CARD -->
+    <div class="date-card">
+        <div class="date-left">
+            <div class="cal">
+                <div class="cal-m">Apr</div>
+                <div class="cal-d">23</div>
+            </div>
+            <div class="date-text">
+                <h2>Thursday, April 23rd, 2026</h2>
+                <p>Weekly check-in #2 &mdash; Urban Glow Grid team</p>
+            </div>
+        </div>
+        <div class="time-block">
+            <div class="time-main">16:30</div>
+            <div class="time-end">→ 18:00</div>
+            <div class="duration">90 min</div>
+        </div>
+    </div>
+
+    <!-- AGENDA -->
+    <div class="section">
+        <div class="section-title">📋 Agenda</div>
+        <table class="agenda">
+            <thead>
+                <tr>
+                    <th>Time</th>
+                    <th>Topic</th>
+                    <th>Owner</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="t">16:30</td>
+                    <td>Opening &amp; Review of Meeting #1 Action Items</td>
+                    <td><span class="tag">All</span></td>
+                </tr>
+                <tr>
+                    <td class="t">16:45</td>
+                    <td>Tech Demo: 3D Paris Simulator v0.2</td>
+                    <td><span class="tag">Sofiane</span></td>
+                </tr>
+                <tr>
+                    <td class="t">17:15</td>
+                    <td>Sustainability Focus: Energy Bar Logic</td>
+                    <td><span class="tag">Ismail</span></td>
+                </tr>
+                <tr>
+                    <td class="t">17:35</td>
+                    <td>Creative Direction: UX/UI Polish</td>
+                    <td><span class="tag">Mohamed</span></td>
+                </tr>
+                <tr>
+                    <td class="t">17:50</td>
+                    <td>Next Steps &amp; Milestone 1 Prep</td>
+                    <td><span class="tag">Abir</span></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- TEAM -->
+    <div class="section">
+        <div class="section-title">👥 Attendees</div>
+        <div class="team-grid">
+            <div class="team-card">
+                <div class="avatar a1">AI</div>
+                <div>
+                    <div class="t-name">Abir ISLAM</div>
+                    <div class="t-role">CEO / Project Lead</div>
+                </div>
+            </div>
+            <div class="team-card">
+                <div class="avatar a2">SL</div>
+                <div>
+                    <div class="t-name">Sofiane LACCHAB</div>
+                    <div class="t-role">CTO</div>
+                </div>
+            </div>
+            <div class="team-card">
+                <div class="avatar a3">MM</div>
+                <div>
+                    <div class="t-name">Mohamed MELLOUK</div>
+                    <div class="t-role">Creative Director</div>
+                </div>
+            </div>
+            <div class="team-card">
+                <div class="avatar a4">IM</div>
+                <div>
+                    <div class="t-name">Ismail MABROUKI</div>
+                    <div class="t-role">Sustainability Analyst</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- KEY DISCUSSIONS -->
+    <div class="section">
+        <div class="section-title">💬 Key Discussions</div>
+
+        <div class="key-details">
+            <div class="kd-item">
+                <div class="kd-label">Topic</div>
+                <div class="kd-value">3D Simulator</div>
+            </div>
+            <div class="kd-item">
+                <div class="kd-label">Status</div>
+                <div class="kd-value">Functional Alpha</div>
+            </div>
+            <div class="kd-item">
+                <div class="kd-label">Decision</div>
+                <div class="kd-value">Proceed to V1</div>
+            </div>
+        </div>
+
+        <div class="discussion-card" style="margin-top:10px;">
+            <h3>Project Advancement - Meeting #2</h3>
+            <ul>
+                <li><strong>Simulator Progress:</strong> Successfully integrated a Day/Night cycle to visualize energy usage impact visually.</li>
+                <li><strong>Energy Monitoring:</strong> Added a "Grid Consumption" bar that dynamically reacts to active districts.</li>
+                <li><strong>Visual Improvements:</strong> Added more landmarks (Notre Dame, Arc de Triomphe) and refined the Seine river curve.</li>
+                <li><strong>Action Item:</strong> Ismail to research realistic energy consumption data for Parisian districts to calibrate the simulator.</li>
+                <li><strong>Action Item:</strong> Mohamed to work on the design of the "Stats" and "Settings" overlay menus.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer">
+        <div class="footer-text">
+            <strong>Urban Glow Grid</strong> &nbsp;·&nbsp; Meeting #2 &nbsp;·&nbsp; April 23, 2026<br>
+            Smart City &nbsp;·&nbsp; Energy Mindfulness &nbsp;·&nbsp; Interactive Simulation
+        </div>
+    </div>
+
+</body>
+</html>

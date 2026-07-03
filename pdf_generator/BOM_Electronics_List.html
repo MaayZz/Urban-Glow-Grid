@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Advanced Electronics BOM &amp; Budget Guide – Urban Glow Grid</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap');
+
+        @page {
+            size: A4;
+            margin: 10mm 15mm;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: #1e293b;
+            background: #ffffff;
+            line-height: 1.45;
+            font-size: 10pt;
+        }
+
+        /* ── HEADER ── */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 3px solid #1db954;
+            padding-bottom: 12px;
+            margin-bottom: 20px;
+        }
+
+        .header-title h1 {
+            font-size: 20pt;
+            font-weight: 800;
+            color: #0f172a;
+            letter-spacing: -0.5px;
+        }
+
+        .header-title p {
+            font-size: 9pt;
+            color: #64748b;
+            margin-top: 2px;
+        }
+
+        .budget-badge {
+            background: rgba(29, 185, 84, 0.1);
+            border: 1px solid #1db954;
+            color: #0f9044;
+            border-radius: 8px;
+            padding: 8px 14px;
+            text-align: right;
+        }
+
+        .budget-badge span {
+            display: block;
+            font-size: 7.5pt;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #64748b;
+        }
+
+        .budget-badge strong {
+            font-size: 14pt;
+            font-weight: 800;
+        }
+
+        /* ── CONCEPT NOTE ── */
+        .concept-note {
+            background: #f8fafc;
+            border-left: 4px solid #0f9044;
+            padding: 12px 16px;
+            border-radius: 0 8px 8px 0;
+            margin-bottom: 20px;
+        }
+
+        .concept-note h3 {
+            font-size: 10.5pt;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .concept-note p {
+            font-size: 9pt;
+            color: #475569;
+            text-align: justify;
+        }
+
+        /* ── SECTION TITLES ── */
+        h2 {
+            font-size: 12pt;
+            font-weight: 800;
+            color: #0f172a;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            border-bottom: 1.5px solid #e2e8f0;
+            padding-bottom: 4px;
+            margin: 20px 0 12px 0;
+            page-break-after: avoid;
+        }
+
+        /* ── BOM CARDS ── */
+        .bom-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+
+        .bom-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 12px 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            page-break-inside: avoid;
+            break-inside: avoid;
+        }
+
+        .bom-left {
+            flex: 1;
+            padding-right: 15px;
+        }
+
+        .bom-name {
+            font-size: 10pt;
+            font-weight: 700;
+            color: #0f172a;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .bom-qty {
+            background: #e2e8f0;
+            color: #334155;
+            font-size: 7.5pt;
+            font-weight: 700;
+            padding: 2px 6px;
+            border-radius: 10px;
+            text-transform: uppercase;
+        }
+
+        .bom-desc {
+            font-size: 9pt;
+            color: #475569;
+            margin-top: 4px;
+        }
+
+        .bom-pin {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 8pt;
+            background: #f8fafc;
+            color: #0f9044;
+            padding: 2px 6px;
+            border-radius: 4px;
+            display: inline-block;
+            margin-top: 6px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .bom-right {
+            text-align: right;
+            min-width: 90px;
+        }
+
+        .price-taobao {
+            font-size: 11pt;
+            font-weight: 800;
+            color: #0f172a;
+        }
+
+        .price-sub {
+            font-size: 7.5pt;
+            color: #94a3b8;
+            margin-top: 1px;
+        }
+
+        .tag-recup {
+            background: #ecfdf5;
+            color: #047857;
+            font-size: 7.5pt;
+            font-weight: 700;
+            padding: 3px 6px;
+            border-radius: 4px;
+            display: inline-block;
+            text-transform: uppercase;
+        }
+
+        /* ── TABLE ── */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 9pt;
+            margin-top: 8px;
+            page-break-inside: avoid;
+        }
+
+        th {
+            background: #0f172a;
+            color: #ffffff;
+            font-size: 8pt;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 8px 10px;
+            text-align: left;
+        }
+
+        td {
+            padding: 8px 10px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        tr:nth-child(even) {
+            background: #f8fafc;
+        }
+
+        .total-row {
+            font-weight: 700;
+            background: #f1f5f9 !important;
+            border-top: 2px solid #cbd5e1;
+        }
+
+        /* ── SCHEMATIC SECTION ── */
+        .schematic-box {
+            background: #f8fafc;
+            border: 1px dashed #cbd5e1;
+            border-radius: 8px;
+            padding: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 8.5pt;
+            color: #334155;
+            line-height: 1.35;
+            margin-top: 8px;
+            page-break-inside: avoid;
+        }
+
+        /* ── FOOTER ── */
+        .footer {
+            margin-top: 20px;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 8px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 7.5pt;
+            color: #94a3b8;
+        }
+
+        @media print {
+            body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .bom-card { border: 1px solid #cbd5e1; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <div class="header">
+        <div class="header-title">
+            <h1>Advanced Electronics BOM &amp; Budget</h1>
+            <p>Urban Glow Grid &nbsp;·&nbsp; Complete Prototyping &amp; Installation Pack</p>
+        </div>
+        <div class="budget-badge">
+            <span>Max Budget</span>
+            <strong>200 RMB</strong>
+        </div>
+    </div>
+
+    <!-- CONCEPT NOTE -->
+    <div class="concept-note">
+        <h3>Optimisation Budgétaire &mdash; Plus de Facilité et de Fonctionnalités</h3>
+        <p>
+            Puisque notre budget initial était très large, nous avons enrichi la liste pour <strong>simplifier radicalement l'assemblage</strong> (zéro soudure requise grâce aux connecteurs de ruban LED et à un shield de bornier à vis pour l'Arduino) et <strong>booster l'interactivité de la maquette</strong>. Nous ajoutons un <strong>écran OLED physique</strong> pour afficher la charge du réseau en temps réel, un <strong>bouton d'arcade lumineux</strong> pour simuler la relance post-blackout, un <strong>pistolet à colle chaude</strong> pour fixer les composants sous le plateau, et un <strong>bloc d'alimentation dédié 5V 3A</strong> pour garantir une puissance stable au bandeau LED sans sacrifier un chargeur personnel.
+        </p>
+    </div>
+
+    <!-- MATERIAL LIST -->
+    <h2>1. Liste Complète du Matériel Électronique &amp; Outillage</h2>
+    <div class="bom-grid">
+
+        <!-- ARDUINO -->
+        <div class="bom-card">
+            <div class="bom-left">
+                <div class="bom-name">
+                    <span>Arduino Uno R3 (Clone CH340)</span>
+                    <span class="bom-qty">Qté: 1</span>
+                </div>
+                <div class="bom-desc">Microcontrôleur central pour piloter la logique, les effets LED adressables, l'écran OLED et les déclenchements sonores.</div>
+                <div class="bom-pin">Pins: I2C (A4/A5 OLED) &nbsp;·&nbsp; D6 (LED Strip) &nbsp;·&nbsp; D10/D11 (Audio TX/RX)</div>
+            </div>
+            <div class="bom-right">
+                <div class="price-taobao">15.00 RMB</div>
+                <div class="price-sub">Boutique Taobao</div>
+            </div>
+        </div>
+
+        <!-- ARDUINO SCREW SHIELD -->
+        <div class="bom-card">
+            <div class="bom-left">
+                <div class="bom-name">
+                    <span>Shield d'Extension à Borniers à Vis pour Arduino Uno</span>
+                    <span class="bom-qty">Qté: 1</span>
+                </div>
+                <div class="bom-desc"><strong>Facilite la réalisation :</strong> Se clipse sur l'Arduino et transforme toutes les broches fragiles en bornes à vis solides. Évite les faux contacts et la déconnexion des fils sous la maquette.</div>
+                <div class="bom-pin">Raccordement: Plus besoin de souder ni d'insérer des broches volantes</div>
+            </div>
+            <div class="bom-right">
+                <div class="price-taobao">15.00 RMB</div>
+                <div class="price-sub">Shield PCB vissable</div>
+            </div>
+        </div>
+
+        <!-- WS2812B STRIP -->
+        <div class="bom-card">
+            <div class="bom-left">
+                <div class="bom-name">
+                    <span>LED Addressable WS2812B (5V, 1m, 60 LED/m)</span>
+                    <span class="bom-qty">Qté: 1 Mètre</span>
+                </div>
+                <div class="bom-desc">Piste de 60 LED RVB permettant de contrôler indépendamment l'éclairage de chaque quartier / monument avec 3 fils.</div>
+                <div class="bom-pin">Connexion: +5V, GND, Pin D6</div>
+            </div>
+            <div class="bom-right">
+                <div class="price-taobao">14.80 RMB</div>
+                <div class="price-sub">Coupe libre</div>
+            </div>
+        </div>
+
+        <!-- SOLDERLESS CONNECTORS -->
+        <div class="bom-card">
+            <div class="bom-left">
+                <div class="bom-name">
+                    <span>Connecteurs Clips Sans Soudure 3 broches pour WS2812B</span>
+                    <span class="bom-qty">Qté: 1 Pack (5 connecteurs)</span>
+                </div>
+                <div class="bom-desc"><strong>Facilite la réalisation :</strong> Clips rapides s'emboîtant directement sur les embouts du ruban LED découpé. Permet de relier la Seine et les monuments sans aucun fer à souder.</div>
+                <div class="bom-pin">Usage: Raccordement instantané par simple pression</div>
+            </div>
+            <div class="bom-right">
+                <div class="price-taobao">5.00 RMB</div>
+                <div class="price-sub">Pack de 5 clips</div>
+            </div>
+        </div>
+
+        <!-- OLED DISPLAY -->
+        <div class="bom-card">
+            <div class="bom-left">
+                <div class="bom-name">
+                    <span>Écran OLED I2C 0.96" (SSD1306)</span>
+                    <span class="bom-qty">Qté: 1</span>
+                </div>
+                <div class="bom-desc"><strong>Ajout interactif :</strong> Mini-écran monochrome très lumineux incrusté sur le tableau de bord physique. Affiche en direct le pourcentage de charge, le nom du quartier survolé et l'état du réseau (Stable / Critique / Blackout).</div>
+                <div class="bom-pin">Broches: VCC, GND, SCL (A5), SDA (A4)</div>
+            </div>
+            <div class="bom-right">
+                <div class="price-taobao">8.00 RMB</div>
+                <div class="price-sub">Afficheur I2C 4 broches</div>
+            </div>
+        </div>
+
+        <!-- ARCADE BUTTON -->
+        <div class="bom-card">
+            <div class="bom-left">
+                <div class="bom-name">
+                    <span>Grand Bouton Arcade Lumineux 5V (30mm, LED intégrée)</span>
+                    <span class="bom-qty">Qté: 1</span>
+                </div>
+                <div class="bom-desc"><strong>Ajout interactif :</strong> Un gros bouton physique rétroéclairé rouge. En cas de blackout général dans le jeu, l'utilisateur doit appuyer dessus physiquement pour lancer le protocole de secours et réinitialiser le réseau.</div>
+                <div class="bom-pin">Broches: Pin D2 (Interruption), Pin D3 (Contrôle LED)</div>
+            </div>
+            <div class="bom-right">
+                <div class="price-taobao">5.00 RMB</div>
+                <div class="price-sub">Interrupteur + LED</div>
+            </div>
+        </div>
+
+        <!-- DFPLAYER MINI & HP -->
+        <div class="bom-card">
+            <div class="bom-left">
+                <div class="bom-name">
+                    <span>Lecteur MP3 DFPlayer Mini + 2 Haut-Parleurs (8Ω 2W)</span>
+                    <span class="bom-qty">Qté: 1 + 2</span>
+                </div>
+                <div class="bom-desc">Gère la lecture audio. Les alertes vocales pré-enregistrées de l'assistant IA ("Consommation excessive !", "Délestage en cours") retentissent directement via les HP.</div>
+                <div class="bom-pin">Connexion: RX/TX sur D10/D11 (via R 1kΩ) &nbsp;·&nbsp; SPK_1 / SPK_2</div>
+            </div>
+            <div class="bom-right">
+                <div class="price-taobao">10.10 RMB</div>
+                <div class="price-sub">Module + 2 HP inclus</div>
+            </div>
+        </div>
+
+        <!-- POWER ADAPTER -->
+        <div class="bom-card">
+            <div class="bom-left">
+                <div class="bom-name">
+                    <span>Bloc d'Alimentation Secteur 5V 3A (Prise DC Jack) + Adaptateur Bornier</span>
+                    <span class="bom-qty">Qté: 1</span>
+                </div>
+                <div class="bom-desc"><strong>Facilite la réalisation :</strong> Fournit un courant stable de 3A, indispensable pour alimenter l'écran, le module audio et surtout les 60 LED sans baisse de tension. Livré avec un adaptateur bornier à vis femelle.</div>
+                <div class="bom-pin">Alimente directement le rail du breadboard / shield Arduino</div>
+            </div>
+            <div class="bom-right">
+                <div class="price-taobao">18.00 RMB</div>
+                <div class="price-sub">Pack alimentation mural</div>
+            </div>
+        </div>
+
+        <!-- HOT GLUE GUN -->
+        <div class="bom-card">
+            <div class="bom-left">
+                <div class="bom-name">
+                    <span>Pistolet à Colle Chaude (20W) + 5 Bâtonnets de Colle</span>
+                    <span class="bom-qty">Qté: 1 Pack</span>
+                </div>
+                <div class="bom-desc"><strong>Outillage essentiel :</strong> Permet de coller de manière permanente et instantanée les segments de ruban LED dans les rainures en bois de la maquette, de fixer les haut-parleurs, et d'isoler les raccords électriques.</div>
+                <div class="bom-pin">Sécurise tout le câblage sous le plateau en bois</div>
+            </div>
+            <div class="bom-right">
+                <div class="price-taobao">12.00 RMB</div>
+                <div class="price-sub">Outil + consommables</div>
+            </div>
+        </div>
+
+        <!-- BREADBOARD, WIRES & ACCESORIES -->
+        <div class="bom-card">
+            <div class="bom-left">
+                <div class="bom-name">
+                    <span>Accessoires de Câblage (Dupont, Potentiomètre, Gaine thermo)</span>
+                    <span class="bom-qty">Qté: 1 Set</span>
+                </div>
+                <div class="bom-desc">Fils de raccordement multicolores (40pcs M-M, 40pcs M-F), potentiomètre de calibration de charge 10k, kit de gaines thermo-rétractables pour protéger les jonctions.</div>
+                <div class="bom-pin">Gaine thermo de 2mm et 4mm incluse</div>
+            </div>
+            <div class="bom-right">
+                <div class="price-taobao">16.00 RMB</div>
+                <div class="price-sub">Set de connectique complet</div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- BUDGET SHEET -->
+    <h2>2. Bilan Budgétaire Taobao Consolidé (Optimisé &lt; 200 RMB)</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Composant / Outil</th>
+                <th>Qté</th>
+                <th>Rôle d'aide à la réalisation &amp; Fonctionnalité</th>
+                <th>Prix Est. (Taobao)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Arduino Uno R3 Clone (CH340)</strong></td>
+                <td>1</td>
+                <td>Unité centrale de traitement (gestion LED, boutons, son, écran)</td>
+                <td>15.00 RMB</td>
+            </tr>
+            <tr>
+                <td><strong>Shield d'Extension Borniers à Vis</strong></td>
+                <td>1</td>
+                <td>Connexions vissées ultra-robustes. Évite tout faux contact.</td>
+                <td>15.00 RMB</td>
+            </tr>
+            <tr>
+                <td><strong>Bandeau de 60 LED Adressables WS2812B</strong></td>
+                <td>1m</td>
+                <td>Effets lumineux bio-luminescents modulables par zone</td>
+                <td>14.80 RMB</td>
+            </tr>
+            <tr>
+                <td><strong>Connecteurs Clips 3 broches sans soudure</strong></td>
+                <td>1 pack</td>
+                <td>Raccordements instantanés de LED sans fer à souder</td>
+                <td>5.00 RMB</td>
+            </tr>
+            <tr>
+                <td><strong>Écran OLED I2C 0.96"</strong></td>
+                <td>1</td>
+                <td>Affiche les indicateurs physiques de charge en temps réel</td>
+                <td>8.00 RMB</td>
+            </tr>
+            <tr>
+                <td><strong>Grand Bouton Arcade Lumineux</strong></td>
+                <td>1</td>
+                <td>Action de secours interactive en cas de blackout</td>
+                <td>5.00 RMB</td>
+            </tr>
+            <tr>
+                <td><strong>DFPlayer Mini + 2 Haut-Parleurs 2W</strong></td>
+                <td>1 set</td>
+                <td>Synthèse vocale et bruitages immersifs de l'assistant IA</td>
+                <td>10.10 RMB</td>
+            </tr>
+            <tr>
+                <td><strong>Alimentation Secteur 5V 3A + DC Jack</strong></td>
+                <td>1 set</td>
+                <td>Alimentation dédiée stable pour l'ensemble du circuit maquette</td>
+                <td>18.00 RMB</td>
+            </tr>
+            <tr>
+                <td><strong>Pistolet à Colle Chaude + 5 bâtonnets</strong></td>
+                <td>1 pack</td>
+                <td>Fixation solide des fils et composants sous la maquette</td>
+                <td>12.00 RMB</td>
+            </tr>
+            <tr>
+                <td><strong>Câbles Dupont, Potar 10k, Gaine thermo</strong></td>
+                <td>1 set</td>
+                <td>Distribution électrique et molette manuelle de charge</td>
+                <td>16.00 RMB</td>
+            </tr>
+            <tr>
+                <td><strong>Structures &amp; Matériel Récupéré</strong></td>
+                <td>-</td>
+                <td>Planche de support, monuments imprimés 3D, carte SD audio</td>
+                <td>0.00 RMB (Récup)</td>
+            </tr>
+            <tr class="total-row">
+                <td colspan="3">SOUS-TOTAL MATÉRIEL &amp; OUTILS</td>
+                <td>118.90 RMB</td>
+            </tr>
+            <tr class="total-row">
+                <td colspan="3">FRAIS DE PORT CONSOLIDÉS (EXPÉDITION TAOBAO)</td>
+                <td>15.00 RMB</td>
+            </tr>
+            <tr class="total-row" style="background: #d1fae5 !important; color: #065f46; font-size: 10.5pt;">
+                <td colspan="3">COÛT TOTAL DU PROJET DÉPOSÉ</td>
+                <td>133.90 RMB</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- WIRING SCHEMATIC -->
+    <h2>3. Schéma Simplifié des Connexions Électroniques</h2>
+    <div class="schematic-box">
+=========================================================================================================
+                           GUIDE DES BRANCHEMENTS DIRECTS (SANS SOUDURE)
+=========================================================================================================
+
+ [Alimentation Générale DC Jack Bornier à Vis (5V / 3A)]
+   - Borne (+) -----------------> Bornier 5V du Shield Arduino &amp; Fil Rouge (+5V) du Ruban LED &amp; OLED VCC
+   - Borne (-) -----------------> Bornier GND du Shield Arduino &amp; Fil Blanc (GND) du Ruban LED &amp; OLED GND
+
+ [Raccordement du Bandeau LED WS2812B (via clip rapide)]
+   - Broche VCC (Fil Rouge) ------> Bornier 5V (Arduino Shield / Rail Alim)
+   - Broche GND (Fil Blanc) ------> Bornier GND (Arduino Shield / Rail Alim)
+   - Broche DI  (Fil Vert) -------> Bornier D6 (Arduino Shield)
+
+ [Raccordement de l'Écran OLED 0.96" (I2C)]
+   - VCC / GND -------------------> Rail 5V / Rail GND
+   - SCL -------------------------> Bornier SCL (ou Pin Analogique A5 sur l'Arduino)
+   - SDA -------------------------> Bornier SDA (ou Pin Analogique A4 sur l'Arduino)
+
+ [Bouton Arcade Lumineux (Contrôle d'Interruption)]
+   - Switch Broche 1 / 2 ---------> Bornier D2 (Arduino) / Bornier GND
+   - LED Broche (+) / (-) --------> Bornier D3 (Arduino - contrôle d'activation) / Bornier GND
+
+ [Potentiomètre 10K (Calibrage de Charge)]
+   - Broche Gauche / Droite -------> Bornier 5V / Bornier GND
+   - Broche Centrale --------------> Bornier A0 (Entrée Analogique Arduino)
+
+=========================================================================================================
+   NOTE: Le Shield de borniers à vis permet de regrouper et serrer plusieurs fils d'alimentation (+5V et
+   GND) dans une même borne de manière extrêmement propre, éliminant le besoin de soudure complexe.
+=========================================================================================================
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer">
+        <div>Urban Glow Grid &nbsp;·&nbsp; Dossier d'Architecture Électronique Avancée</div>
+        <div>Généré le 18 Mai 2026 &nbsp;·&nbsp; Page 1 sur 1</div>
+    </div>
+
+</body>
+</html>

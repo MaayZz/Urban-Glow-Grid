@@ -1,0 +1,524 @@
+import asyncio
+from playwright.async_api import async_playwright
+import os
+from pathlib import Path
+
+HTML_CONTENT = """<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Urban Glow Grid — Day 2 Scale-Up Oral Script</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800;900&display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    b, strong {
+      font-weight: 800 !important;
+    }
+
+    @page {
+      size: A4 portrait;
+      margin: 10mm 15mm;
+    }
+
+    body {
+      background: #f4f8f6; /* Soft mint off-white */
+      background-image: 
+        radial-gradient(circle at 90% 10%, rgba(16, 185, 129, 0.06) 0%, transparent 40%),
+        radial-gradient(circle at 10% 90%, rgba(5, 150, 105, 0.04) 0%, transparent 40%);
+      color: #1e293b;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      line-height: 1.45;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    /* ── TITLE BLOCK ── */
+    .title-block {
+      border-bottom: 2px solid rgba(16, 185, 129, 0.2);
+      padding-bottom: 8px;
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+
+    .title-left h1 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 22pt;
+      font-weight: 800;
+      color: #064e3b;
+      letter-spacing: -1px;
+    }
+
+    .title-left p {
+      font-size: 9pt;
+      color: #059669;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-top: 1px;
+    }
+
+    .title-meta {
+      text-align: right;
+      font-size: 8pt;
+      color: #64748b;
+      font-weight: 600;
+      line-height: 1.35;
+    }
+
+    .title-meta strong {
+      color: #064e3b;
+    }
+
+    /* ── METRICS GRID ── */
+    .metrics-bar {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .metric-card {
+      background: #ffffff;
+      border: 1px solid rgba(16, 185, 129, 0.12);
+      padding: 6px 8px;
+      border-radius: 10px;
+      text-align: center;
+      box-shadow: 0 4px 10px -5px rgba(6, 78, 59, 0.03);
+    }
+
+    .metric-card span {
+      display: block;
+      font-size: 7pt;
+      color: #64748b;
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      margin-bottom: 1px;
+    }
+
+    .metric-card strong {
+      font-family: 'Outfit', sans-serif;
+      font-size: 11pt;
+      color: #064e3b;
+      font-weight: 700;
+    }
+
+    /* Print styling */
+    @media print {
+      body { background: transparent; }
+      .metric-card, .script-card, .cue-box, .speech-box {
+        box-shadow: none !important;
+        border: 1px solid rgba(16, 185, 129, 0.15) !important;
+      }
+    }
+
+    /* ── SCRIPT CARDS ── */
+    .script-card {
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 10px 14px;
+      border: 1px solid rgba(16, 185, 129, 0.10);
+      box-shadow: 0 6px 20px -10px rgba(6, 78, 59, 0.03);
+      margin-bottom: 10px;
+      position: relative;
+      page-break-inside: avoid;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+      border-bottom: 1px solid rgba(16, 185, 129, 0.06);
+      padding-bottom: 4px;
+    }
+
+    .slide-info {
+      font-family: 'Outfit', sans-serif;
+      font-size: 9.5pt;
+      font-weight: 700;
+      color: #064e3b;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .slide-number {
+      background: #e6f4ea;
+      color: #064e3b;
+      padding: 1px 5px;
+      border-radius: 4px;
+      font-size: 7.5pt;
+      font-weight: 800;
+    }
+
+    .card-badges {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Speaker Badges */
+    .badge-speaker {
+      padding: 2px 7px;
+      border-radius: 99px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 7.5pt;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .speaker-abir { background: #e0f2fe; color: #0369a1; border: 1px solid #bae6fd; }
+    .speaker-ismail { background: #d1fae5; color: #065f46; border: 1px solid #a7f3d0; }
+    .speaker-sofiane { background: #f3e8ff; color: #6b21a8; border: 1px solid #e9d5ff; }
+    .speaker-mohamed { background: #fef3c7; color: #92400e; border: 1px solid #fde68a; }
+
+    .badge-time {
+      background: #f1f5f9;
+      color: #475569;
+      border: 1px solid #e2e8f0;
+      padding: 1.5px 6px;
+      border-radius: 99px;
+      font-size: 7pt;
+      font-weight: 700;
+    }
+
+    /* Visual Action / Cue Box */
+    .cue-box {
+      background: #f8fafc;
+      border-left: 3px solid #10b981;
+      padding: 5px 8px;
+      font-size: 7.5pt;
+      color: #475569;
+      border-radius: 0 6px 6px 0;
+      margin-bottom: 8px;
+      font-style: italic;
+    }
+
+    .cue-box strong {
+      color: #0f172a;
+      font-style: normal;
+    }
+
+    /* Speech Text */
+    .speech-box {
+      font-size: 9.5pt;
+      color: #0f172a;
+      font-weight: 500;
+      line-height: 1.45;
+      padding: 6px 10px;
+      background: #fafdfb;
+      border: 1px solid rgba(16, 185, 129, 0.04);
+      border-radius: 6px;
+      margin-bottom: 8px;
+      position: relative;
+    }
+
+    .speech-box::before {
+      content: "“";
+      font-family: 'Outfit', sans-serif;
+      font-size: 20pt;
+      color: rgba(16, 185, 129, 0.1);
+      position: absolute;
+      left: 2px;
+      top: -6px;
+      pointer-events: none;
+    }
+
+    .speech-box p {
+      text-indent: 10px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Bullet Guidelines */
+    .guidelines {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+    }
+
+    .guide-tag {
+      background: #f1f5f9;
+      color: #64748b;
+      font-size: 7pt;
+      font-weight: 600;
+      padding: 1px 5px;
+      border-radius: 3px;
+      border: 1px solid #e2e8f0;
+    }
+
+    .guide-tag strong {
+      color: #334155;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    
+    <!-- ── TITLE BLOCK ── -->
+    <div class="title-block">
+      <div class="title-left">
+        <h1>Urban Glow Grid</h1>
+        <p>Day 2 Scale-Up Oral Script — Investor Pitch Edition</p>
+      </div>
+      <div class="title-meta">
+        Project: <strong>Team 22</strong><br>
+        Presentation: <strong>Day 2 Sourcing &amp; Scale-Up (7 Slides)</strong><br>
+        Status: <strong>Strictly Balanced (120s / 70 words per presenter)</strong>
+      </div>
+    </div>
+
+    <!-- ── METRICS GRID ── -->
+    <div class="metrics-bar">
+      <div class="metric-card">
+        <span>Total Duration</span>
+        <strong>2:00 Minutes</strong>
+      </div>
+      <div class="metric-card">
+        <span>Presenters</span>
+        <strong>4 Speakers</strong>
+      </div>
+      <div class="metric-card">
+        <span>Speaker Limit</span>
+        <strong>30s / Speaker</strong>
+      </div>
+      <div class="metric-card">
+        <span>Target Pace</span>
+        <strong>70 words / Person</strong>
+      </div>
+    </div>
+
+    <!-- ── CARD 1: ABIR INTRO (SLIDE 1) ── -->
+    <div class="script-card">
+      <div class="card-header">
+        <div class="slide-info">
+          <span class="slide-number">Slide 1</span>
+          <span>Cover &amp; Strategic Hook</span>
+        </div>
+        <div class="card-badges">
+          <span class="badge-speaker speaker-abir">Abir</span>
+          <span class="badge-time">⏱ ~12s</span>
+          <span class="badge-time">📝 28 words</span>
+        </div>
+      </div>
+      <div class="cue-box">
+        <strong>Visual Cue:</strong> Abir stands at the center, slide 1 is displayed on screen, and the presentation timer is started.
+      </div>
+      <div class="speech-box">
+        <p>Good morning, investors. I am Abir, CEO of Team twenty two. We present Urban Glow Grid, an IoT enabled sustainable grid simulator aligning with SDGs seven and eleven.</p>
+      </div>
+      <div class="guidelines">
+        <span class="guide-tag">Focus: <strong>Pitch Hook, SDGs, Team 22 Introduction</strong></span>
+        <span class="guide-tag">Pace: <strong>Clear, energetic opening</strong></span>
+      </div>
+    </div>
+
+    <!-- ── CARD 2: ABIR OVERVIEW (SLIDE 2) ── -->
+    <div class="script-card">
+      <div class="card-header">
+        <div class="slide-info">
+          <span class="slide-number">Slide 2</span>
+          <span>Product Concept &amp; Industrial Vision</span>
+        </div>
+        <div class="card-badges">
+          <span class="badge-speaker speaker-abir">Abir</span>
+          <span class="badge-time">⏱ ~5s</span>
+          <span class="badge-time">📝 12 words</span>
+        </div>
+      </div>
+      <div class="cue-box">
+        <strong>Visual Cue:</strong> Abir gestures to slide 2 showing the high-fidelity AI-generated finished product concept.
+      </div>
+      <div class="speech-box">
+        <p>Our educational console empowers users to manage energy networks, accelerating energy learning.</p>
+      </div>
+      <div class="guidelines">
+        <span class="guide-tag">Focus: <strong>Value Proposition, SDG 7 &amp; 11</strong></span>
+        <span class="guide-tag">Target: <strong>30,000 Units Scaled Production</strong></span>
+      </div>
+    </div>
+
+    <!-- ── CARD 3: ISMAIL MVP (SLIDE 3) ── -->
+    <div class="script-card">
+      <div class="card-header">
+        <div class="slide-info">
+          <span class="slide-number">Slide 3</span>
+          <span>Physical MVP Prototype Architecture</span>
+        </div>
+        <div class="card-badges">
+          <span class="badge-speaker speaker-ismail">Ismail</span>
+          <span class="badge-time">⏱ ~30s</span>
+          <span class="badge-time">📝 70 words</span>
+        </div>
+      </div>
+      <div class="cue-box">
+        <strong>Visual Cue:</strong> Ismail steps up, gestures to the physical wood prototype and highlights the bottom wiring layout on the slide.
+      </div>
+      <div class="speech-box">
+        <p>I am Ismail. Our physical prototype contours Paris over seven birch wood panels structured by eight pillars, containing twenty one building slots. Beneath, an Arduino Uno and an MCP3008 multiplexer read six rotary dials and three buttons on a solderless breadboard, driving six addressable LED stripes. Rocker power switches and dual speakers handle real time energy state alarms, validating our core hardware electrical architecture. I will now pass to Sofiane.</p>
+      </div>
+      <div class="guidelines">
+        <span class="guide-tag">Focus: <strong>Hardware Components, Topography Chassis</strong></span>
+        <span class="guide-tag">Details: <strong>Arduino Uno, MCP3008 ADC, LEDs, Speakers</strong></span>
+      </div>
+    </div>
+
+    <!-- ── CARD 4: SOFIANE BOM (SLIDE 4) ── -->
+    <div class="script-card">
+      <div class="card-header">
+        <div class="slide-info">
+          <span class="slide-number">Slide 4</span>
+          <span>Prototype BOM vs. Wholesale Estimates</span>
+        </div>
+        <div class="card-badges">
+          <span class="badge-speaker speaker-sofiane">Sofiane</span>
+          <span class="badge-time">⏱ ~30s</span>
+          <span class="badge-time">📝 70 words</span>
+        </div>
+      </div>
+      <div class="cue-box">
+        <strong>Visual Cue:</strong> Sofiane references the BOM comparison table on slide 4, pointing out the major cost collapse.
+      </div>
+      <div class="speech-box">
+        <p>Thank you, Ismail. I am Sofiane. Sourcing our nineteen prototype components from Taobao retail distributors costs exactly one hundred and fifty CNY. However, at a scale up volume of thirty thousand units, our raw hardware costs collapse to thirty CNY. We achieve this by design for manufacturing: integrating microcontroller chipsets directly onto custom PCBAs and shifting from three D printing to rapid plastic injection molding. I now pass to Mohamed.</p>
+      </div>
+      <div class="guidelines">
+        <span class="guide-tag">Focus: <strong>BOM Sourcing, Cost Reduction Rationale</strong></span>
+        <span class="guide-tag">Data: <strong>150 CNY Proto DIY vs. 30 CNY Bulk Hardware</strong></span>
+      </div>
+    </div>
+
+    <!-- ── CARD 5: MOHAMED MANUFACTURING (SLIDE 5) ── -->
+    <div class="script-card">
+      <div class="card-header">
+        <div class="slide-info">
+          <span class="slide-number">Slide 5</span>
+          <span>Manufacturing Strategy &amp; Process Evolution</span>
+        </div>
+        <div class="card-badges">
+          <span class="badge-speaker speaker-mohamed">Mohamed</span>
+          <span class="badge-time">⏱ ~30s</span>
+          <span class="badge-time">📝 70 words</span>
+        </div>
+      </div>
+      <div class="cue-box">
+        <strong>Visual Cue:</strong> Mohamed points to the timeline on slide 5 showing Phase 1 manual pilots and Phase 2 outsourced automation.
+      </div>
+      <div class="speech-box">
+        <p>Thank you, Sofiane. I am Mohamed. In Phase one, months one to four, we manually assemble with four operators to calibrate dials, program PCBAs, and run QC gates. In Phase two, month five, we delegate assembly to contract suppliers in the Yangtze River Delta, automating production lines. Sourced from Ningbo, we maintain a safety stock of one thousand units, shipping by sea or air to sell three thousand consoles monthly.</p>
+      </div>
+      <div class="guidelines">
+        <span class="guide-tag">Focus: <strong>Process Evolution, Assembly Timeline</strong></span>
+        <span class="guide-tag">Data: <strong>1,000 Buffer Stock, 3,000 Monthly Sales Target</strong></span>
+      </div>
+    </div>
+
+    <!-- ── CARD 6: ABIR FINANCIAL MODEL (SLIDE 6) ── -->
+    <div class="script-card">
+      <div class="card-header">
+        <div class="slide-info">
+          <span class="slide-number">Slide 6</span>
+          <span>Financial Business Model &amp; Unit Economics</span>
+        </div>
+        <div class="card-badges">
+          <span class="badge-speaker speaker-abir">Abir</span>
+          <span class="badge-time">⏱ ~12s</span>
+          <span class="badge-time">📝 28 words</span>
+        </div>
+      </div>
+      <div class="cue-box">
+        <strong>Visual Cue:</strong> Abir returns, directing the judges' attention to the wholesale financial stats on slide 6.
+      </div>
+      <div class="speech-box">
+        <p>At one hundred and twenty CNY cost, selling at two hundred and ninety nine CNY yields a sixty percent gross margin. Rotterdam and Chicago hubs secure local distribution.</p>
+      </div>
+      <div class="guidelines">
+        <span class="guide-tag">Focus: <strong>Cost Price, B2B Pricing, Global Warehouses</strong></span>
+        <span class="guide-tag">Data: <strong>120 CNY Cost (Coût de Revient), 299 CNY Price</strong></span>
+      </div>
+    </div>
+
+    <!-- ── CARD 7: ABIR CLOSING (SLIDE 7) ── -->
+    <div class="script-card">
+      <div class="card-header">
+        <div class="slide-info">
+          <span class="slide-number">Slide 7</span>
+          <span>Q&amp;A Session</span>
+        </div>
+        <div class="card-badges">
+          <span class="badge-speaker speaker-abir">Abir</span>
+          <span class="badge-time">⏱ ~1s</span>
+          <span class="badge-time">📝 2 words</span>
+        </div>
+      </div>
+      <div class="cue-box">
+        <strong>Visual Cue:</strong> Abir invites questions while the whole team bows slightly in appreciation.
+      </div>
+      <div class="speech-box">
+        <p>Thank you.</p>
+      </div>
+      <div class="guidelines">
+        <span class="guide-tag">Focus: <strong>Call to Action, Q&amp;A Invitation</strong></span>
+        <span class="guide-tag">Pace: <strong>Polite and welcoming tone</strong></span>
+      </div>
+    </div>
+
+  </div>
+
+ </body>
+</html>
+"""
+
+async def main():
+    scale_up_dir = Path("/Users/Abir/Desktop/innovation project/scale up")
+    scale_up_dir.mkdir(parents=True, exist_ok=True)
+    
+    html_file = scale_up_dir / "scaleup_oral_script.html"
+    pdf_file = scale_up_dir / "team22_urbanglowgrid_scaleup_oral_script.pdf"
+    
+    # Write the HTML script
+    html_file.write_text(HTML_CONTENT, encoding="utf-8")
+    print(f"Written scale-up oral script HTML to {html_file.absolute()}")
+
+    print("Launching browser via Playwright...")
+    async with async_playwright() as p:
+        browser = await p.chromium.launch()
+        page = await browser.new_page()
+        
+        # Load the HTML file
+        filepath = os.path.abspath(str(html_file))
+        await page.goto(f"file://{filepath}", wait_until="domcontentloaded")
+        
+        # Wait for page painting & fonts loading
+        print("Waiting for page layouts to paint...")
+        await page.wait_for_timeout(2000)
+        
+        # Emulate print media
+        await page.emulate_media(media="print")
+        
+        # Generate the portrait PDF
+        print("Generating PDF...")
+        await page.pdf(
+            path=str(pdf_file),
+            format="A4",
+            landscape=False,
+            print_background=True,
+            margin={"top": "0", "bottom": "0", "left": "0", "right": "0"}
+        )
+        
+        await browser.close()
+        print(f"✅ Oral Script PDF successfully generated at:\n  - {pdf_file.absolute()}")
+
+if __name__ == "__main__":
+    asyncio.run(main())

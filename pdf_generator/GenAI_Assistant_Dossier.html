@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>GenAI Assistant Dossier – Urban Glow Grid</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+
+        :root {
+            --primary: #1db954;
+            --primary-dark: #0f9044;
+            --text: #1a1a2e;
+            --text-light: #64748b;
+            --border: #e2e8f0;
+        }
+
+        @page {
+            size: A4;
+            margin: 20mm;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text);
+            background: white;
+            line-height: 1.5;
+            font-size: 11pt;
+            -webkit-print-color-adjust: exact;
+        }
+
+        /* ── TITLE PAGE ── */
+        .title-page {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            min-height: 250mm; /* Large height to take up most of first page */
+            page-break-after: always;
+        }
+
+        .logo-large { margin-bottom: 30px; }
+        
+        .title-badge {
+            background: var(--primary);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 4px;
+            font-size: 12pt;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+        }
+
+        .main-title {
+            font-size: 36pt;
+            font-weight: 800;
+            color: #0f172a;
+            margin-bottom: 10px;
+        }
+
+        .sub-title {
+            font-size: 16pt;
+            color: var(--text-light);
+            max-width: 600px;
+            margin-bottom: 60px;
+        }
+
+        .team-info {
+            border-top: 2px solid var(--primary);
+            padding-top: 30px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            text-align: left;
+            width: 100%;
+        }
+
+        .team-member b { display: block; color: var(--text); font-size: 13pt; }
+        .team-member span { color: var(--text-light); font-size: 11pt; }
+
+        /* ── CONTENT ── */
+        h2 {
+            font-size: 20pt;
+            font-weight: 800;
+            color: #0f172a;
+            margin: 40px 0 20px 0;
+            border-bottom: 3px solid var(--primary);
+            padding-bottom: 8px;
+            page-break-after: avoid;
+        }
+
+        h3 {
+            font-size: 14pt;
+            font-weight: 700;
+            margin: 25px 0 12px 0;
+            text-transform: uppercase;
+            color: #1e293b;
+            page-break-after: avoid;
+        }
+
+        p { margin-bottom: 15px; text-align: justify; }
+
+        .prompt-box, .excerpt-card, .reflection-card, table, .artifact-item, .glossary-item {
+            page-break-inside: avoid;
+            break-inside: avoid;
+            margin-bottom: 20px;
+            border: 1px solid var(--border);
+        }
+
+        .prompt-box {
+            padding: 15px;
+            background: #fdfdfd;
+            border-left: 5px solid var(--primary);
+        }
+
+        .prompt-tag {
+            font-size: 9pt;
+            font-weight: 800;
+            color: var(--primary-dark);
+            text-transform: uppercase;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .prompt-content {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10pt;
+            white-space: pre-wrap;
+        }
+
+        .excerpt-header {
+            background: #f8fafc;
+            padding: 10px 15px;
+            border-bottom: 1px solid var(--border);
+            font-weight: 700;
+        }
+
+        .excerpt-body { padding: 15px; }
+
+        .chat-bubble {
+            padding: 12px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            border: 1px solid #e2e8f0;
+        }
+        .chat-user { background: #f1f5f9; }
+        .chat-ai { background: white; border-left: 4px solid var(--primary); }
+
+        .critique-box {
+            margin-top: 15px;
+            padding: 15px;
+            background: #fffbeb;
+            border: 1px solid #fef3c7;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 10pt;
+        }
+        th { background: #0f172a; color: white; padding: 10px; text-align: left; }
+        td { padding: 10px; border-bottom: 1px solid var(--border); }
+
+        .artifact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        .artifact-item { padding: 15px; background: #f8fafc; }
+
+        .glossary-item { padding: 15px; border: none; border-bottom: 1px solid #f1f5f9; }
+        .glossary-term { font-weight: 800; color: var(--primary-dark); }
+        .glossary-example { font-size: 9.5pt; color: var(--text-light); font-style: italic; margin-top: 4px; }
+
+        .integration-layer { padding: 18px 20px; margin-bottom: 16px; border: 1px solid var(--border); background: #fdfdfd; border-left: 5px solid var(--primary); page-break-inside: avoid; break-inside: avoid; }
+        .integration-layer h4 { font-size: 11pt; font-weight: 700; color: #0f172a; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .integration-layer p { margin-bottom: 8px; }
+        .integration-layer p:last-child { margin-bottom: 0; }
+        .layer-tag { display: inline-block; font-size: 8.5pt; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; padding: 2px 8px; border-radius: 3px; margin-bottom: 10px; }
+        .tag-digital { background: #dbeafe; color: #1d4ed8; }
+        .tag-physical { background: #dcfce7; color: #15803d; }
+        .tag-narrative { background: #fef9c3; color: #854d0e; }
+        .tag-process { background: #f3e8ff; color: #7e22ce; }
+
+        .ai-role-table th { background: #1e293b; }
+        .ai-role-table td { vertical-align: top; font-size: 10pt; }
+        .ai-role-table td:first-child { font-weight: 700; color: #0f172a; white-space: nowrap; }
+
+        .critical-box { margin-top: 20px; padding: 16px 20px; background: #fff7ed; border: 1px solid #fed7aa; border-left: 5px solid #f97316; page-break-inside: avoid; break-inside: avoid; }
+        .critical-box h4 { font-size: 11pt; font-weight: 700; color: #c2410c; margin-bottom: 10px; }
+        .critical-box ul { padding-left: 18px; }
+        .critical-box li { margin-bottom: 6px; font-size: 10.5pt; }
+
+        .reflection-card { padding: 20px; background: #f8fafc; border: none; border-top: 2px solid var(--primary); }
+        .reflection-name { font-weight: 800; font-size: 13pt; color: #0f172a; margin-bottom: 4px; }
+        .reflection-role { font-size: 10pt; color: var(--primary-dark); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 14px; }
+        .reflection-label { font-size: 9pt; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; margin-top: 12px; margin-bottom: 4px; }
+        .reflection-label.success { color: #16a34a; }
+        .reflection-label.failure { color: #dc2626; }
+        .reflection-label.lesson { color: #2563eb; }
+
+        .footer {
+            margin-top: 50px;
+            text-align: center;
+            font-size: 10pt;
+            color: var(--text-light);
+            border-top: 1px solid var(--border);
+            padding-top: 20px;
+        }
+
+        /* ── HIGH-FIDELITY GEMINI UI ── */
+        .chat-ui {
+            background: #131314;
+            border-radius: 12px;
+            margin: 15px 0;
+            padding: 20px;
+            color: #e3e3e3;
+            font-size: 10pt;
+            page-break-inside: avoid;
+            font-family: 'Inter', sans-serif;
+            border: 1px solid #3c4043;
+        }
+        .chat-bubble-user {
+            background: #2b2b2b;
+            padding: 12px 18px;
+            border-radius: 20px;
+            margin-bottom: 25px;
+            margin-left: auto;
+            max-width: 85%;
+            position: relative;
+            color: #fff;
+            border: 1px solid #444;
+        }
+        .chat-bubble-user::after {
+            content: "⌄";
+            position: absolute;
+            right: 15px;
+            top: 5px;
+            color: #999;
+        }
+        .chat-ai-container {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+        }
+        .chat-ai-icon {
+            width: 28px;
+            height: 28px;
+            background: linear-gradient(135deg, #4285f4, #9b72cb, #d96570);
+            border-radius: 50%;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 14px;
+        }
+        .chat-ai-content {
+            flex-grow: 1;
+            line-height: 1.6;
+        }
+        .chat-ai-content b { color: #fff; }
+        .chat-ai-reasoning {
+            color: #8ab4f8;
+            font-size: 9.5pt;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: default;
+        }
+        .chat-ai-reasoning::after { content: '⌄'; font-size: 12px; }
+
+        /* ── VERIFICATION BADGE ── */
+        .verify-box { background: #f0fdf4; border: 1px solid #bbf7d0; border-left: 4px solid #16a34a; padding: 10px 14px; margin-top: 10px; font-size: 10pt; }
+        .verify-box b { color: #15803d; }
+        .error-box { background: #fef2f2; border: 1px solid #fecaca; border-left: 4px solid #dc2626; padding: 10px 14px; margin-top: 8px; font-size: 10pt; }
+        .error-box b { color: #b91c1c; }
+
+        /* ── DIVERGE / CONVERGE ── */
+        .dc-section { margin: 16px 0; page-break-inside: avoid; break-inside: avoid; }
+        .dc-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+        .dc-badge { font-size: 8.5pt; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; padding: 3px 10px; border-radius: 3px; }
+        .dc-diverge { background: #ede9fe; color: #6d28d9; }
+        .dc-converge { background: #dcfce7; color: #15803d; }
+        .dc-arrow { text-align: center; font-size: 16pt; color: var(--primary); margin: 8px 0; }
+
+        /* ── ARTIFACT REFERENCE ── */
+        .artifact-ref { display: inline-block; background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 3px; padding: 2px 8px; font-size: 8.5pt; font-weight: 600; color: #1d4ed8; margin: 2px 2px 2px 0; }
+    </style>
+</head>
+<body>
+
+    <!-- PAGE 1 -->
+    <div class="title-page">
+        <div class="logo-large">
+            <svg width="130" height="56" viewBox="0 0 130 56" fill="none" xmlns="http://www.w3.org/2000/svg" style="transform: scale(2);">
+                <circle cx="24" cy="20" r="14" fill="#0f9044" opacity="0.12"/>
+                <circle cx="24" cy="20" r="9"  fill="#1db954" opacity="0.25"/>
+                <circle cx="24" cy="20" r="5"  fill="#1db954"/>
+                <text x="56" y="16" font-family="'Inter', sans-serif" font-size="13" font-weight="700" fill="#111" letter-spacing="0.3">URBAN</text>
+                <text x="56" y="30" font-family="'Inter', sans-serif" font-size="13" font-weight="700" fill="#1db954" letter-spacing="0.3">GLOW</text>
+                <text x="56" y="44" font-family="'Inter', sans-serif" font-size="13" font-weight="300" fill="#6b7280" letter-spacing="2">GRID</text>
+            </svg>
+        </div>
+        <div class="title-badge">GenAI Assistant Dossier</div>
+        <h1 class="main-title">How We Worked with AI</h1>
+        <p class="sub-title">Documenting our collaborative innovation process for the Urban Glow Grid project.</p>
+        
+        <div class="team-info">
+            <div class="team-member"><b>Abir ISLAM</b><span>CEO / Simulation</span></div>
+            <div class="team-member"><b>Sofiane LACHHAB</b><span>CTO / Planning</span></div>
+            <div class="team-member"><b>Mohamed MELLOUK</b><span>Creative Director</span></div>
+        </div>
+    </div>
+
+    <!-- PAGE 2+ -->
+    <h2>1. Prompt & Template Library</h2>
+    <p>Our library consists of 10 specialized prompts and 2 reusable templates designed for the Urban Glow Grid project.</p>
+
+    <div class="section">
+        <h3>Use Case 1: Research & Data</h3>
+        <div class="prompt-box">
+            <span class="prompt-tag">Prompt #1: Energy Metrics</span>
+            <div class="prompt-content">"Find the average peak-hour energy consumption for the 8th arrondissement of Paris. Provide the data in a simplified ratio for a game simulation."</div>
+        </div>
+        <div class="prompt-box">
+            <span class="prompt-tag">Prompt #2: CO2 Calibration</span>
+            <div class="prompt-content">"What is the average CO2 emission per kWh in the French grid? We need this for a 'Sustainability' feature in our dashboard."</div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h3>Use Case 2: Ideation & Spatial Planning</h3>
+        <div class="prompt-box">
+            <span class="prompt-tag">Prompt #3: Physical Model Sketch</span>
+            <div class="prompt-content">"We are building a wooden scale model. Suggest a way to represent 'energy glow' using fiber optics. How should we carve the wood?"</div>
+        </div>
+        <div class="prompt-box">
+            <span class="prompt-tag">Prompt #4: IoT Sensors</span>
+            <div class="prompt-content">"Which IoT sensors are best for tracking energy data in a scale model? Suggest positioning for optimal visibility."</div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h3>Use Case 3: Planning & Validation</h3>
+        <div class="prompt-box">
+            <span class="prompt-tag">Prompt #5: Sprint Planning</span>
+            <div class="prompt-content">"Draft a 4-week sprint for a hybrid project (Physical Model + Simulation). Include a 'Convergence Week' for syncing."</div>
+        </div>
+        <div class="prompt-box">
+            <span class="prompt-tag">Prompt #6: Logic Validation</span>
+            <div class="prompt-content">"Review this JS logic: if totalLoad > capacity * 1.2, trigger a blackout. Is this too punishing? Suggest a 'warning' state."</div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h3>Use Case 4: Coding & Technical Design</h3>
+        <div class="prompt-box">
+            <span class="prompt-tag">Prompt #7: SVG Optimization</span>
+            <div class="prompt-content">"Optimize this SVG path of the Seine river for a web simulator. The current path is too complex and causes lag."</div>
+        </div>
+        <div class="prompt-box">
+            <span class="prompt-tag">Prompt #8: Accessibility</span>
+            <div class="prompt-content">"How can we make our game accessible to color-blind users? Suggest a palette for the energy bar."</div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h3>Use Case 5: Content & Criticism</h3>
+        <div class="prompt-box">
+            <span class="prompt-tag">Prompt #9: Pitch Script</span>
+            <div class="prompt-content">"Write a 1-minute pitch script for 'Urban Glow Grid'. Focus on the contrast between dark city and glowing districts."</div>
+        </div>
+        <div class="prompt-box">
+            <span class="prompt-tag">Prompt #10: Jury Review</span>
+            <div class="prompt-content">"Act as a critical jury member. Identify logic gaps in our value proposition for Urban Glow Grid."</div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h3>Reusable Templates</h3>
+        <div class="prompt-box" style="border-left-width: 10px;">
+            <span class="prompt-tag">Template A: Lyra (Master Optimizer)</span>
+            <div class="prompt-content"><b>Role:</b> Lyra, Expert in Prompt Engineering. <b>Method:</b> 4-D (Deconstruct, Diagnose, Develop, Deliver).</div>
+            <div class="prompt-meta">Used to transform vague ideas into high-precision technical blueprints.</div>
+        </div>
+        <div class="prompt-box">
+            <span class="prompt-tag">Template B: The Director's Mindset</span>
+            <div class="prompt-content"><b>Role:</b> Technical Systems Director. <b>Mission:</b> Design the bridge between Digital and Physical layers.</div>
+        </div>
+    </div>
+
+    <h2>2. Conversation Excerpts</h2>
+    <div class="section">
+        <div class="excerpt-card">
+            <div class="excerpt-header">Excerpt #1 — LED Color Logic &amp; Breathing Effect (Abir · Gemini)</div>
+            <div class="excerpt-body">
+                <div class="chat-ui">
+                    <div class="chat-bubble-user">Je développe un simulateur web appelé 'Urban Glow Grid' pour visualiser la consommation d'énergie de Paris. Écris-moi une fonction JavaScript qui fait varier la couleur de remplissage des bâtiments du vert au rouge pulsé...</div>
+                    <div class="chat-ai-container">
+                        <div class="chat-ai-icon">✨</div>
+                        <div class="chat-ai-content">
+                            <div class="chat-ai-reasoning">Afficher le raisonnement</div>
+                            C'est une excellente idée d'ajouter cette dimension organique à <b>Urban Glow-Grid</b>. Visualiser les données de manière viscérale crée une urgence émotionnelle que de simples graphiques ne peuvent pas transmettre.<br><br>
+                            Pour obtenir cet effet subtil de "respiration", la meilleure approche est de combiner JavaScript pour la logique d'état et l'interpolation des couleurs, avec les variables CSS pour gérer l'animation matériellement accélérée.
+                        </div>
+                    </div>
+                </div>
+                <div class="verify-box"><b>✓ What worked:</b> Gemini proposed combining JS for state logic with CSS Variables for hardware-accelerated color interpolation. The "breathing" metaphor was directly implemented in <span class="artifact-ref">Urban_GlowGrid_Simulator.html</span>.</div>
+                <div class="critique-box"><b>✗ Human Override:</b> The AI initially suggested a complex mathematical approach for the oscillation. We simplified this to a clean CSS transition to ensure smooth performance across all browsers.</div>
+            </div>
+        </div>
+
+        <div class="excerpt-card">
+            <div class="excerpt-header">Excerpt #2 — Carbon Intensity Data (Abir · Gemini)</div>
+            <div class="excerpt-body">
+                <div class="chat-ui">
+                    <div class="chat-bubble-user">Quelle est l'émission moyenne de CO2 par kWh pour le réseau électrique français en 2023 ? Comment ce chiffre évolue-t-il pendant les heures de pointe...</div>
+                    <div class="chat-ai-container">
+                        <div class="chat-ai-icon">✨</div>
+                        <div class="chat-ai-content">
+                            C'est une excellente initiative pour ton projet étudiant. Prendre en compte la variation temporelle de l'intensité carbone est la marque d'un simulateur de haute précision. La plupart des bilans se contentent d'une moyenne annuelle, ce qui masque l'impact réel des pics de demande urbaine.<br><br>
+                            Voici les chiffres réels et précis pour la France, basés sur les données du <b>Réseau de Transport d'Électricité (RTE)</b> et de l'<b>ADEME</b>.
+                        </div>
+                    </div>
+                </div>
+                <div class="verify-box"><b>✓ Data Source:</b> The AI correctly referenced <b>RTE</b> and <b>ADEME</b>. We used the official figure of ~52g CO2/kWh (average for France) to calibrate our sustainability scores.</div>
+                <div class="critique-box"><b>Lesson:</b> AI is excellent for identifying correct sources (RTE/ADEME), but figures were cross-checked manually against official PDF reports to ensure accuracy.</div>
+            </div>
+        </div>
+
+        <div class="excerpt-card">
+            <div class="excerpt-header">Excerpt #3 — Scale &amp; Physical Constraints (Sofiane · Gemini)</div>
+            <div class="excerpt-body">
+                <div class="chat-ui">
+                    <div class="chat-bubble-user">Je souhaite construire une maquette physique en bois des arrondissements de Paris sur une planche qui fait exactement 80x60cm. Paris fait environ 10km de large. Quelle échelle dois-je utiliser...</div>
+                    <div class="chat-ai-container">
+                        <div class="chat-ai-icon">✨</div>
+                        <div class="chat-ai-content">
+                            C'est une excellente question technique pour ton projet <b>Urban Glow-Grid</b>. Le choix de l'échelle est le compromis le plus critique entre la lisibilité de la maquette et la complexité de la fabrication.<br><br>
+                            <b>1. Analyse des dimensions et calcul de l'échelle</b><br>
+                            Paris intra-muros mesure environ <b>12 km d'Est en Ouest</b> et environ <b>9 km du Nord au Sud</b>.
+                        </div>
+                    </div>
+                </div>
+                <div class="error-box"><b>✗ Constraint Issue:</b> The AI provided an accurate analysis of Paris dimensions (12km x 9km) but the initial scale suggestion was too complex for a 3-week timeline.</div>
+                <div class="verify-box"><b>✓ Correction:</b> We manually simplified the scale to 1:15,000 to fit our 80x60cm board, prioritizing readability for the jury. Recorded in <span class="artifact-ref">Weekly_Meeting_2.pdf</span>.</div>
+            </div>
+        </div>
+    </div>
+
+    <h2>3. Experiment Log</h2>
+    <table>
+        <thead>
+            <tr><th>Experiment</th><th>Tool</th><th>Iterations</th><th>Outcome</th><th>Linked Artifact</th></tr>
+        </thead>
+        <tbody>
+            <tr><td>JS Simulation Core</td><td>ChatGPT</td><td>4</td><td>Accepted</td><td><span class="artifact-ref">Simulator.html</span></td></tr>
+            <tr><td>Physical Map Sketch</td><td>Claude</td><td>3</td><td>Accepted (simplified)</td><td><span class="artifact-ref">Meeting_2.pdf – p.3</span></td></tr>
+            <tr><td>Pitch Slogan</td><td>Gemini</td><td>10+</td><td>Rejected — human-written</td><td><span class="artifact-ref">Pitch – Slide 1</span></td></tr>
+            <tr><td>PDF Gen Script</td><td>Antigravity</td><td>5</td><td>Accepted</td><td><span class="artifact-ref">generate_dossier_pdf.py</span></td></tr>
+            <tr><td>Game Mechanic Ideation</td><td>ChatGPT</td><td>1 diverge + 2 converge</td><td>Accepted — "Glow" selected</td><td><span class="artifact-ref">Pitch – Slide 6</span></td></tr>
+        </tbody>
+    </table>
+
+    <h3>3.1 — Diverge &amp; Converge: Selecting the "Glow" Mechanic</h3>
+    <div class="dc-section">
+        <div class="chat-ui">
+            <div class="chat-bubble-user">Donne-moi 10 mécaniques de jeu distinctes et créatives qui rendent l'économie d'énergie visuellement gratifiante...</div>
+            <div class="chat-ai-container">
+                <div class="chat-ai-icon">✨</div>
+                <div class="chat-ai-content">
+                    Pour <b>Urban Glow-Grid</b>, l'enjeu est de transformer une contrainte (la sobriété) en une force vitale. Voici 10 mécaniques :<br><br>
+                    <b>1. La "Respiration Lumineuse" (Bio-Luminescence)</b><br>
+                    Au lieu d'un éclairage statique, les zones sobres adoptent un effet de "pulsation lente"...
+                </div>
+            </div>
+        </div>
+        <div class="dc-header"><span class="dc-badge dc-diverge">↗ Diverge — 10 mechanics generated</span></div>
+        <div class="chat-ui">
+            <div class="chat-bubble-user">Parmi ces 10 idées, concentrons-nous sur 'Glow Intensity'. Comment cela fonctionnerait-il concrètement ?</div>
+            <div class="chat-ai-container">
+                <div class="chat-ai-icon">✨</div>
+                <div class="chat-ai-content">
+                    C'est une excellente question de design comportemental. En psychologie cognitive, on sait que la <b>récompense variable</b> et le <b>renforcement positif</b> sont bien plus efficaces pour l'apprentissage à long terme que la punition.
+                </div>
+            </div>
+        </div>
+        <div class="dc-header"><span class="dc-badge dc-converge">↘ Converge — 1 mechanic retained</span></div>
+        <div class="verify-box"><b>Why "Glow Intensity" won:</b> Positive reinforcement and variable reward systems are more effective for learning than punishment. Implemented in <span class="artifact-ref">Pitch Slides – Slide 6</span>.</div>
+    </div>
+
+    <h2>4. Project Integration</h2>
+    <div class="section">
+        <p>AI was used at three levels: the <b>digital simulator</b>, the <b>physical model</b>, and the <b>narrative</b>. Each contribution below is linked to a concrete project artifact.</p>
+
+        <h3>4.1 — AI Contributions Linked to Project Artifacts</h3>
+        <table class="ai-role-table">
+            <thead>
+                <tr><th>Member</th><th>AI Contribution</th><th>Linked Artifact</th><th>Override</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Abir ISLAM</td><td>Multi-state energy logic (Green→Blackout), CSS pulse animation, PDF automation</td><td><span class="artifact-ref">Simulator.html – L.89–134</span> <span class="artifact-ref">generate_dossier_pdf.py</span></td><td>~30%</td></tr>
+                <tr><td>Sofiane LACHHAB</td><td>Wood-cutting zone layout (5 zones), LED groove depth, fiber-optic routing</td><td><span class="artifact-ref">Weekly_Meeting_2.pdf – p.3</span> <span class="artifact-ref">Pitch Slides – Slide 8</span></td><td>~50%</td></tr>
+                <tr><td>Mohamed MELLOUK</td><td>"Glow" mechanic ideation, pitch narrative reframe ("mindfulness"), visual palette</td><td><span class="artifact-ref">Pitch Slides – Slides 4–6</span> <span class="artifact-ref">Simulator.html – UI</span></td><td>~60%</td></tr>
+            </tbody>
+        </table>
+
+        <div class="critical-box">
+            <h4>⚠ Key Takeaways</h4>
+            <ul>
+                <li><b>Best use:</b> First-draft generation, technical scaffolding, and documentation automation.</li>
+                <li><b>Limits:</b> AI over-engineered solutions and ignored explicit constraints — heavy filtering was always required.</li>
+                <li><b>Rule:</b> Every AI output was verified against a real source or tested in code before integration.</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2>5. Glossary of AI Terms</h2>
+    <div class="section">
+        <div class="glossary-item"><span class="glossary-term">Prompt Engineering</span> — Crafting input text deliberately to guide an AI toward a specific, quality output using role, format, and constraints.</div>
+        <div class="glossary-item"><span class="glossary-term">Few-Shot Prompting</span> — Providing 2–5 examples inside the prompt so the model understands the expected format or style.</div>
+        <div class="glossary-item"><span class="glossary-term">Chain-of-Thought (CoT)</span> — Asking the AI to reason step-by-step before giving a final answer, improving accuracy on multi-step problems.</div>
+        <div class="glossary-item"><span class="glossary-term">Hallucination</span> — When an AI confidently generates false information. All AI-produced data was cross-checked against official sources.</div>
+        <div class="glossary-item"><span class="glossary-term">Context Window</span> — The maximum amount of text an AI can process at once. In long sessions, earlier constraints can be forgotten.</div>
+        <div class="glossary-item"><span class="glossary-term">Human-in-the-Loop (HITL)</span> — Every AI output was reviewed and validated by a team member before being used in the project.</div>
+        <div class="glossary-item"><span class="glossary-term">Iteration / Refinement Loop</span> — The process of repeatedly improving AI output through feedback. Most usable results required 3–5+ rounds.</div>
+    </div>
+
+    <h2>6. Individual Reflections</h2>
+    <div class="section">
+        <div class="reflection-card">
+            <div class="reflection-name">Abir ISLAM</div>
+            <div class="reflection-role">CEO</div>
+            <p>I used assistants to generate the simulation logic in JS to test how our physical LEDs should react to different energy loads.</p>
+            <div class="reflection-label success">✓ Success</div>
+            <p>A major success was the automation of our file generation.</p>
+            <div class="reflection-label failure">✗ Failure</div>
+            <p>A failure was when the AI suggested overly complex math.</p>
+            <div class="reflection-label lesson">→ Lesson Learned</div>
+            <p>I learned that AI is a powerful accelerator for technical prototyping but requires a strong "filter".</p>
+        </div>
+        <div class="reflection-card">
+            <div class="reflection-name">Sofiane LACHHAB</div>
+            <div class="reflection-role">CTO</div>
+            <p>I used AI as a spatial planning assistant to sketch the wood-cutting map of Paris for our physical installation.</p>
+            <div class="reflection-label success">✓ Success</div>
+            <p>A success was the advice on how to integrate LED wiring within the wooden structure.</p>
+            <div class="reflection-label failure">✗ Failure</div>
+            <p>A failure was when it suggested a 1:1 scale that was physically impossible.</p>
+            <div class="reflection-label lesson">→ Lesson Learned</div>
+            <p>I learned that AI is excellent for architectural brainstorming.</p>
+        </div>
+        <div class="reflection-card">
+            <div class="reflection-name">Mohamed MELLOUK</div>
+            <div class="reflection-role">Creative Director</div>
+            <p>My role was to find game mechanics that encourage energy mindfulness and to select the specific visual assets for our UI.</p>
+            <div class="reflection-label success">✓ Success</div>
+            <p>A success was the "Glow" mechanic, which makes energy saving visually rewarding.</p>
+            <div class="reflection-label lesson">→ Lesson Learned</div>
+            <p>I learned that AI is a great ideation partner for game systems, but the final "vibe" must remain human-led.</p>
+        </div>
+    </div>
+
+    <div class="footer">
+        Group 22 · Urban Glow Grid · Innovation Project 2026 · GenAI Assistant Dossier
+    </div>
+
+</body>
+</html>

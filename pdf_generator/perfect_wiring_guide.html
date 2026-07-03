@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Guide de Câblage Ultime - Urban Glow Grid</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@400;500;600&display=swap');
+    
+    @page {
+      size: A4;
+      margin: 15mm 20mm 15mm 20mm;
+    }
+    
+    body {
+      font-family: 'Inter', sans-serif;
+      color: #1e293b;
+      line-height: 1.6;
+      background-color: #ffffff;
+      margin: 0;
+      padding: 0;
+    }
+
+    h1, h2, h3 {
+      font-family: 'Space Grotesk', sans-serif;
+      color: #0f172a;
+      margin-top: 0;
+    }
+
+    h1 {
+      font-size: 24px;
+      font-weight: 700;
+      border-bottom: 2px solid #10b981;
+      padding-bottom: 8px;
+      margin-bottom: 20px;
+    }
+
+    h2 {
+      font-size: 16px;
+      font-weight: 600;
+      color: #059669;
+      margin-top: 20px;
+      margin-bottom: 10px;
+      border-left: 4px solid #10b981;
+      padding-left: 8px;
+    }
+
+    p {
+      font-size: 13.5px;
+      margin-bottom: 15px;
+    }
+
+    .container {
+      max-width: 100%;
+    }
+
+    .header-box {
+      background: linear-gradient(135deg, #064e3b, #10b981);
+      color: #ffffff;
+      padding: 20px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+    }
+
+    .header-box h1 {
+      color: #ffffff;
+      border: none;
+      margin: 0 0 5px 0;
+      padding: 0;
+      font-size: 26px;
+    }
+
+    .header-box p {
+      margin: 0;
+      font-size: 13px;
+      opacity: 0.9;
+    }
+
+    .image-container {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .schematic-img {
+      width: 100%;
+      max-width: 500px;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+      border: 1px solid #e2e8f0;
+    }
+
+    .image-caption {
+      font-size: 11px;
+      color: #64748b;
+      margin-top: 6px;
+      font-style: italic;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+      font-size: 12px;
+    }
+
+    th, td {
+      padding: 8px 10px;
+      text-align: left;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    th {
+      background-color: #f8fafc;
+      color: #0f172a;
+      font-weight: 600;
+    }
+
+    tr:hover {
+      background-color: #f1f5f9;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 2px 5px;
+      border-radius: 4px;
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .badge-gnd { background-color: #334155; color: #ffffff; }
+    .badge-vcc { background-color: #ef4444; color: #ffffff; }
+    .badge-3v3 { background-color: #f97316; color: #ffffff; }
+    .badge-sda { background-color: #3b82f6; color: #ffffff; }
+    .badge-scl { background-color: #eab308; color: #000000; }
+    .badge-out { background-color: #10b981; color: #ffffff; }
+    .badge-in  { background-color: #ec4899; color: #ffffff; }
+    .badge-spi { background-color: #8b5cf6; color: #ffffff; }
+
+    .card {
+      background-color: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 12px 15px;
+      margin-bottom: 15px;
+    }
+
+    .card h3 {
+      margin-top: 0;
+      margin-bottom: 6px;
+      font-size: 14px;
+      color: #064e3b;
+    }
+
+    .card ul {
+      margin: 0;
+      padding-left: 18px;
+      font-size: 12.5px;
+    }
+
+    .card li {
+      margin-bottom: 4px;
+    }
+
+    .footer {
+      font-size: 10px;
+      color: #94a3b8;
+      text-align: center;
+      margin-top: 20px;
+      border-top: 1px solid #e2e8f0;
+      padding-top: 8px;
+    }
+
+    .page-break {
+      page-break-before: always;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  
+  <div class="header-box">
+    <h1>Urban Glow Grid</h1>
+    <p>Guide de Câblage de Référence – Prototype de Jeu Complet (1 Arduino Uno)</p>
+  </div>
+
+  <div class="image-container">
+    <img src="urban_glow_grid_perfect_wiring.png" alt="Schéma de Câblage 3D Parfait" class="schematic-img">
+    <div class="image-caption">Schéma 3D photoréaliste du prototype complet intégrant le MCP3008, l'écran OLED, les LED, les boutons, le speaker et le ruban LED.</div>
+  </div>
+
+  <h2>1. Instructions d'Installation Étape par Étape</h2>
+  <p>
+    Pour éviter tout court-circuit et simplifier le débogage, effectue les branchements dans cet ordre précis :
+  </p>
+
+  <div class="card">
+    <h3>Étape 1 : Les Rails d'Alimentation et de Masse (Masse Commune)</h3>
+    <ul>
+      <li>Connecte la broche **5V** de l'Arduino au rail rouge de la **Breadboard n°1**.</li>
+      <li>Connecte l'une des broches **GND** de l'Arduino au rail bleu de la **Breadboard n°1**.</li>
+      <li>Relie le rail bleu (GND) de la Breadboard n°1 au rail bleu de la **Breadboard n°2** (Masse commune).</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>Étape 2 : L'Écran OLED I2C (Alimentation 3.3V)</h3>
+    <ul>
+      <li>Branche la broche **VCC** de l'écran directement sur la broche **3.3V** de l'Arduino.</li>
+      <li>Branche la broche **GND** de l'écran sur le rail bleu (GND).</li>
+      <li>Branche la broche **SDA** de l'écran sur la broche analogique **A4** de l'Arduino.</li>
+      <li>Branche la broche **SCL** de l'écran sur la broche analogique **A5** de l'Arduino.</li>
+    </ul>
+  </div>
+
+  <div class="page-break"></div>
+
+  <h2>2. Tableau de Câblage Complet</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Broche Arduino</th>
+        <th>Type de Signal</th>
+        <th>Composant Connecté</th>
+        <th>Broche du Composant</th>
+        <th>Résistance Requise</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>GND</strong></td>
+        <td><span class="badge badge-gnd">GND</span></td>
+        <td>Masse Commune (Tous)</td>
+        <td>Rails bleus des breadboards</td>
+        <td>Aucune</td>
+      </tr>
+      <tr>
+        <td><strong>5V</strong></td>
+        <td><span class="badge badge-vcc">5V VCC</span></td>
+        <td>MCP3008, Potentiomètres, Ruban LED</td>
+        <td>VCC / VDD / VREF</td>
+        <td>Aucune</td>
+      </tr>
+      <tr>
+        <td><strong>3.3V</strong></td>
+        <td><span class="badge badge-3v3">3.3V VCC</span></td>
+        <td>Écran OLED SSD1306</td>
+        <td>VCC</td>
+        <td>Aucune</td>
+      </tr>
+      <tr>
+        <td><strong>A4</strong></td>
+        <td><span class="badge badge-sda">I2C SDA</span></td>
+        <td>Écran OLED</td>
+        <td>SDA</td>
+        <td>Aucune</td>
+      </tr>
+      <tr>
+        <td><strong>A5</strong></td>
+        <td><span class="badge badge-scl">I2C SCL</span></td>
+        <td>Écran OLED</td>
+        <td>SCL</td>
+        <td>Aucune</td>
+      </tr>
+      <tr>
+        <td><strong>D2</strong></td>
+        <td><span class="badge badge-in">Input (Pull-up)</span></td>
+        <td>Bouton 1 (Sélection Zone)</td>
+        <td>Patte A (Patte B sur GND)</td>
+        <td>Aucune</td>
+      </tr>
+      <tr>
+        <td><strong>D3</strong></td>
+        <td><span class="badge badge-out">Output (NeoPixel)</span></td>
+        <td>Ruban LED 5V Adressable</td>
+        <td>Fil DIN (Données)</td>
+        <td>330Ω (Recommandée)</td>
+      </tr>
+      <tr>
+        <td><strong>D4</strong></td>
+        <td><span class="badge badge-spi">SPI Soft CS</span></td>
+        <td>MCP3008</td>
+        <td>Pin 10 (CS/SHDN)</td>
+        <td>Aucune</td>
+      </tr>
+      <tr>
+        <td><strong>D5</strong></td>
+        <td><span class="badge badge-out">Output (Digital)</span></td>
+        <td>LED de Statut Verte (Stable)</td>
+        <td>Anode (+) (Cathode sur GND)</td>
+        <td><strong>220Ω</strong> (Série)</td>
+      </tr>
+      <tr>
+        <td><strong>D6</strong></td>
+        <td><span class="badge badge-out">Output (Digital)</span></td>
+        <td>LED de Statut Jaune (Warning)</td>
+        <td>Anode (+) (Cathode sur GND)</td>
+        <td><strong>220Ω</strong> (Série)</td>
+      </tr>
+      <tr>
+        <td><strong>D7</strong></td>
+        <td><span class="badge badge-spi">SPI Soft CLK</span></td>
+        <td>MCP3008</td>
+        <td>Pin 13 (CLK)</td>
+        <td>Aucune</td>
+      </tr>
+      <tr>
+        <td><strong>D8</strong></td>
+        <td><span class="badge badge-spi">SPI Soft DIN</span></td>
+        <td>MCP3008</td>
+        <td>Pin 11 (DIN)</td>
+        <td>Aucune</td>
+      </tr>
+      <tr>
+        <td><strong>D9</strong></td>
+        <td><span class="badge badge-out">Output (PWM)</span></td>
+        <td>Haut-parleur (Speaker)</td>
+        <td>Fil Rouge (Fil Noir sur GND)</td>
+        <td><strong>220Ω</strong> (Série)</td>
+      </tr>
+      <tr>
+        <td><strong>D10</strong></td>
+        <td><span class="badge badge-out">Output (Digital)</span></td>
+        <td>LED de Statut Rouge (Blackout)</td>
+        <td>Anode (+) (Cathode sur GND)</td>
+        <td><strong>220Ω</strong> (Série)</td>
+      </tr>
+      <tr>
+        <td><strong>D11</strong></td>
+        <td><span class="badge badge-in">Input (Pull-up)</span></td>
+        <td>Bouton 2 (Toggle Zone ON/OFF)</td>
+        <td>Patte A (Patte B sur GND)</td>
+        <td>Aucune</td>
+      </tr>
+      <tr>
+        <td><strong>D12</strong></td>
+        <td><span class="badge badge-spi">SPI Soft DOUT</span></td>
+        <td>MCP3008</td>
+        <td>Pin 12 (DOUT)</td>
+        <td>Aucune</td>
+      </tr>
+      <tr>
+        <td><strong>D13</strong></td>
+        <td><span class="badge badge-in">Input (Pull-up)</span></td>
+        <td>Bouton 3 (Reset / Start Jeu)</td>
+        <td>Patte A (Patte B sur GND)</td>
+        <td>Aucune</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="card">
+    <h3>Étape 3 : Le MCP3008 et les 6 Potentiomètres</h3>
+    <ul>
+      <li>Place le **MCP3008** au centre de la Breadboard n°1.</li>
+      <li>Relie les pins d'alimentation du MCP3008 :
+        <ul>
+          <li>Pin 16 (VDD) et Pin 15 (VREF) ──► Rail Rouge (+5V).</li>
+          <li>Pin 9 (DGND) et Pin 14 (AGND) ──► Rail Bleu (GND).</li>
+        </ul>
+      </li>
+      <li>Relie les pins de communication (D4, D7, D8, D12) comme indiqué dans le tableau.</li>
+      <li>Pour chaque potentiomètre (Gauche=GND, Droite=5V), connecte la **patte du milieu** à un canal d'entrée analogique :
+        <ul>
+          <li>Pot 1 ──► Pin 1 (CH0), Pot 2 ──► Pin 2 (CH1), Pot 3 ──► Pin 3 (CH2)</li>
+          <li>Pot 4 ──► Pin 4 (CH3), Pot 5 ──► Pin 5 (CH4), Pot 6 ──► Pin 6 (CH5)</li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+
+  <div class="footer">
+    Urban Glow Grid – Guide Technique de Câblage Complet - Version 2.0 (Prototype de Jeu)
+  </div>
+
+</div>
+
+</body>
+</html>
